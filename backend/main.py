@@ -17,8 +17,13 @@ from fastapi.responses import FileResponse
 # Add backend to path for imports
 sys.path.insert(0, str(Path(__file__).parent))
 
-from config import STATION_NAME, LINE_COLOR, DIRECTION, NUM_DEPARTURES, HOST, PORT
+from config import (
+    STATION_NAME, LINE_COLOR, DIRECTION, NUM_DEPARTURES, HOST, PORT,
+    STM_API_KEY, STM_GTFS_RT_URL, STM_SERVICE_ALERTS_URL,
+    USE_REALTIME, SHOW_SERVICE_ALERTS
+)
 from gtfs_parser import get_parser
+from service_alerts import get_service_alerts
 
 
 @asynccontextmanager
@@ -34,6 +39,17 @@ async def lifespan(app: FastAPI):
     if not parser.load_data():
         print("Warning: Could not load GTFS data. API may not work correctly.")
     
+    # Log real-time status
+    if USE_REALTIME:
+        print("✓ Real-time data ENABLED (API key configured)")
+    else:
+        print("✗ Real-time data DISABLED (no API key - using schedule only)")
+    
+    if SHOW_SERVICE_ALERTS:
+        print("✓ Service alerts ENABLED")
+    else:
+        print("✗ Service alerts DISABLED")
+    
     yield
     
     # Cleanup (if needed)
@@ -43,7 +59,7 @@ async def lifespan(app: FastAPI):
 app = FastAPI(
     title="STM Metro Display",
     description="Real-time metro departure times for Montreal STM",
-    version="1.0.0",
+    version="2.0.0",
     lifespan=lifespan
 )
 
@@ -73,7 +89,9 @@ async def get_config():
         "station": STATION_NAME,
         "line": LINE_COLOR,
         "direction": DIRECTION,
-        "num_departures": NUM_DEPARTURES
+        "num_departures": NUM_DEPARTURES,
+        "realtime_enabled": USE_REALTIME,
+        "alerts_enabled": SHOW_SERVICE_ALERTS
     }
 
 
@@ -88,9 +106,10 @@ async def get_next_departures(
     Get the next metro departures for a station.
     
     Uses configuration defaults if parameters are not provided.
+    Now includes real-time data if API key is configured.
     
     Returns:
-        List of departures with time and minutes until arrival
+        List of departures with time, minutes until arrival, and realtime flag
     """
     # Use config defaults if not specified
     station = station or STATION_NAME
@@ -106,19 +125,66 @@ async def get_next_departures(
             detail="GTFS data not loaded. Please wait or check server logs."
         )
     
+    # Pass API credentials if real-time is enabled
+    api_key = STM_API_KEY if USE_REALTIME else None
+    gtfs_rt_url = STM_GTFS_RT_URL if USE_REALTIME else None
+    
     departures = parser.get_next_departures(
         station_name=station,
         line_color=line,
         direction=direction,
-        num_results=count
+        num_results=count,
+        api_key=api_key,
+        gtfs_rt_url=gtfs_rt_url
     )
+    
+    # Check if any departures have real-time data
+    has_realtime = any(d.get("realtime", False) for d in departures)
     
     return {
         "station": station,
         "line": line,
         "direction": direction,
         "departures": departures,
-        "count": len(departures)
+        "count": len(departures),
+        "realtime_active": has_realtime,
+        "data_source": "realtime" if has_realtime else "schedule"
+    }
+
+
+@app.get("/api/alerts")
+async def get_alerts(line: str = None):
+    """
+    Get service alerts for the metro.
+    
+    Args:
+        line: Optional filter for specific line color
+        
+    Returns:
+        List of service alerts affecting metro service
+    """
+    if not SHOW_SERVICE_ALERTS or not STM_API_KEY:
+        return {
+            "alerts": [],
+            "count": 0,
+            "enabled": False,
+            "message": "Service alerts not enabled. Configure STM_API_KEY in .env"
+        }
+    
+    line = line or LINE_COLOR
+    
+    alerts_service = get_service_alerts()
+    alerts = alerts_service.get_metro_alerts(
+        api_key=STM_API_KEY,
+        alerts_url=STM_SERVICE_ALERTS_URL,
+        line_color=line
+    )
+    
+    return {
+        "alerts": alerts,
+        "count": len(alerts),
+        "enabled": True,
+        "line_filter": line
     }
 
 
@@ -128,7 +194,10 @@ async def health_check():
     parser = get_parser()
     return {
         "status": "healthy",
-        "gtfs_loaded": parser._loaded
+        "gtfs_loaded": parser._loaded,
+        "realtime_enabled": USE_REALTIME,
+        "alerts_enabled": SHOW_SERVICE_ALERTS,
+        "api_key_configured": bool(STM_API_KEY)
     }
 
 
@@ -141,16 +210,21 @@ if frontend_dir.exists():
 if __name__ == "__main__":
     import uvicorn
     
+    realtime_status = "✓ ENABLED" if USE_REALTIME else "✗ DISABLED (no API key)"
+    alerts_status = "✓ ENABLED" if SHOW_SERVICE_ALERTS else "✗ DISABLED"
+    
     print(f"""
     ╔══════════════════════════════════════════════════════════════╗
-    ║                    STM Metro Display                         ║
+    ║                    STM Metro Display v2.0                    ║
     ╠══════════════════════════════════════════════════════════════╣
-    ║  Station:   {STATION_NAME:<47} ║
-    ║  Line:      {LINE_COLOR.capitalize():<47} ║
-    ║  Direction: {DIRECTION:<47} ║
+    ║  Station:    {STATION_NAME:<46} ║
+    ║  Line:       {LINE_COLOR.capitalize():<46} ║
+    ║  Direction:  {DIRECTION:<46} ║
     ╠══════════════════════════════════════════════════════════════╣
-    ║  Server starting at http://{HOST}:{PORT:<24} ║
-    ║  Open in browser to see the display                          ║
+    ║  Real-time:  {realtime_status:<46} ║
+    ║  Alerts:     {alerts_status:<46} ║
+    ╠══════════════════════════════════════════════════════════════╣
+    ║  Server:     http://{HOST}:{PORT:<38} ║
     ╚══════════════════════════════════════════════════════════════╝
     """)
     
@@ -161,4 +235,3 @@ if __name__ == "__main__":
         reload=True,
         reload_dirs=[str(Path(__file__).parent)]
     )
-

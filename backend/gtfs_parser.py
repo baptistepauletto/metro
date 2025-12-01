@@ -1,8 +1,8 @@
 """
 GTFS Parser for STM Metro Data
 ==============================
-Loads and queries STM's static GTFS schedule data to find
-upcoming metro departures for a specific station and direction.
+Loads and queries STM's static GTFS schedule data and real-time updates
+to find upcoming metro departures for a specific station and direction.
 """
 
 import os
@@ -29,6 +29,11 @@ class GTFSParser:
         self.calendar_df: Optional[pd.DataFrame] = None
         self.calendar_dates_df: Optional[pd.DataFrame] = None
         self._loaded = False
+        
+        # Real-time data cache
+        self._realtime_updates: dict = {}
+        self._realtime_last_fetch: Optional[datetime] = None
+        self._realtime_cache_seconds = 30  # Refresh every 30 seconds
     
     def download_gtfs(self, force: bool = False) -> bool:
         """
@@ -225,12 +230,90 @@ class GTFSParser:
         
         return active_services
     
+    def fetch_realtime_updates(self, api_key: str, gtfs_rt_url: str) -> dict:
+        """
+        Fetch real-time trip updates from STM's GTFS-RT API.
+        
+        Args:
+            api_key: STM API key
+            gtfs_rt_url: Base URL for GTFS-RT API
+            
+        Returns:
+            Dictionary mapping (trip_id, stop_id) to delay in seconds
+        """
+        # Check cache
+        now = datetime.now()
+        if (self._realtime_last_fetch and 
+            (now - self._realtime_last_fetch).total_seconds() < self._realtime_cache_seconds):
+            return self._realtime_updates
+        
+        try:
+            from google.transit import gtfs_realtime_pb2
+            
+            # Fetch trip updates
+            headers = {
+                "apiKey": api_key,
+                "Accept": "application/x-protobuf"
+            }
+            
+            response = requests.get(
+                f"{gtfs_rt_url}/tripUpdates",
+                headers=headers,
+                timeout=10
+            )
+            response.raise_for_status()
+            
+            # Parse protobuf
+            feed = gtfs_realtime_pb2.FeedMessage()
+            feed.ParseFromString(response.content)
+            
+            updates = {}
+            for entity in feed.entity:
+                if entity.HasField("trip_update"):
+                    trip_update = entity.trip_update
+                    trip_id = trip_update.trip.trip_id
+                    
+                    for stop_time_update in trip_update.stop_time_update:
+                        stop_id = stop_time_update.stop_id
+                        
+                        # Get arrival delay (or departure delay as fallback)
+                        delay = 0
+                        arrival_time = None
+                        
+                        if stop_time_update.HasField("arrival"):
+                            delay = stop_time_update.arrival.delay
+                            if stop_time_update.arrival.time:
+                                arrival_time = stop_time_update.arrival.time
+                        elif stop_time_update.HasField("departure"):
+                            delay = stop_time_update.departure.delay
+                            if stop_time_update.departure.time:
+                                arrival_time = stop_time_update.departure.time
+                        
+                        updates[(trip_id, stop_id)] = {
+                            "delay": delay,
+                            "arrival_time": arrival_time
+                        }
+            
+            self._realtime_updates = updates
+            self._realtime_last_fetch = now
+            print(f"Fetched {len(updates)} real-time updates")
+            return updates
+            
+        except ImportError:
+            print("gtfs-realtime-bindings not installed. Run: pip install gtfs-realtime-bindings")
+            return {}
+        except Exception as e:
+            print(f"Error fetching real-time updates: {e}")
+            return self._realtime_updates  # Return cached data on error
+    
     def get_next_departures(
         self,
         station_name: str,
         line_color: str,
         direction: str,
-        num_results: int = 3
+        num_results: int = 3,
+        api_key: str = None,
+        gtfs_rt_url: str = None
     ) -> list[dict]:
         """
         Get the next departures for a station.
@@ -240,9 +323,11 @@ class GTFSParser:
             line_color: Color of the metro line
             direction: Direction of travel (terminus name)
             num_results: Number of departures to return
+            api_key: Optional STM API key for real-time data
+            gtfs_rt_url: Optional GTFS-RT API URL
             
         Returns:
-            List of departure dictionaries with 'time' and 'minutes' keys
+            List of departure dictionaries with 'time', 'minutes', and 'realtime' keys
         """
         if not self._loaded:
             if not self.load_data():
@@ -250,6 +335,11 @@ class GTFSParser:
         
         now = datetime.now()
         current_time = now.strftime("%H:%M:%S")
+        
+        # Fetch real-time updates if API key provided
+        realtime_updates = {}
+        if api_key and gtfs_rt_url:
+            realtime_updates = self.fetch_realtime_updates(api_key, gtfs_rt_url)
         
         # Find all stops that match the station name
         station_stops = self.stops_df[
@@ -315,8 +405,13 @@ class GTFSParser:
         
         # Get next N departures
         departures = []
-        for _, row in stop_times.head(num_results).iterrows():
+        for _, row in stop_times.head(num_results * 2).iterrows():  # Get extra in case some are filtered
+            if len(departures) >= num_results:
+                break
+                
             dep_time_str = row["departure_time"]
+            trip_id = row["trip_id"]
+            stop_id = row["stop_id"]
             
             # Parse departure time (handle times > 24:00 for overnight service)
             try:
@@ -333,20 +428,38 @@ class GTFSParser:
                         datetime.strptime(dep_time_str, "%H:%M:%S").time()
                     )
                 
+                # Apply real-time delay if available
+                is_realtime = False
+                rt_key = (trip_id, stop_id)
+                if rt_key in realtime_updates:
+                    rt_data = realtime_updates[rt_key]
+                    delay_seconds = rt_data.get("delay", 0)
+                    
+                    # If we have an absolute arrival time, use it
+                    if rt_data.get("arrival_time"):
+                        dep_datetime = datetime.fromtimestamp(rt_data["arrival_time"])
+                    else:
+                        # Otherwise apply delay
+                        dep_datetime += timedelta(seconds=delay_seconds)
+                    
+                    is_realtime = True
+                
                 # Calculate minutes until departure
                 delta = dep_datetime - now
                 minutes_until = int(delta.total_seconds() / 60)
                 
                 if minutes_until >= 0:
                     departures.append({
-                        "time": f"{hours:02d}:{minutes:02d}",
-                        "minutes": minutes_until
+                        "time": dep_datetime.strftime("%H:%M"),
+                        "minutes": minutes_until,
+                        "realtime": is_realtime,
+                        "trip_id": trip_id
                     })
             except Exception as e:
                 print(f"Error parsing time {dep_time_str}: {e}")
                 continue
         
-        return departures
+        return departures[:num_results]
 
 
 # Singleton instance for the application
@@ -363,18 +476,22 @@ def get_parser() -> GTFSParser:
 
 if __name__ == "__main__":
     # Test the parser
+    from config import STATION_NAME, LINE_COLOR, DIRECTION, STM_API_KEY, STM_GTFS_RT_URL
+    
     parser = GTFSParser()
     parser.download_gtfs()
     parser.load_data()
     
     departures = parser.get_next_departures(
-        station_name="Rosemont",
-        line_color="orange",
-        direction="Côte-Vertu",
-        num_results=3
+        station_name=STATION_NAME,
+        line_color=LINE_COLOR,
+        direction=DIRECTION,
+        num_results=3,
+        api_key=STM_API_KEY,
+        gtfs_rt_url=STM_GTFS_RT_URL
     )
     
     print("\nNext departures:")
     for dep in departures:
-        print(f"  {dep['time']} ({dep['minutes']} min)")
-
+        rt_indicator = " (LIVE)" if dep.get("realtime") else " (scheduled)"
+        print(f"  {dep['time']} ({dep['minutes']} min){rt_indicator}")
