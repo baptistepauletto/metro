@@ -28,6 +28,11 @@
             --text-primary: #ffffff;
             --text-secondary: #888888;
             --text-muted: #444444;
+            
+            /* Alert colors */
+            --alert-critical: #ff4444;
+            --alert-warning: #ffaa00;
+            --alert-info: #4a9eff;
         }
         
         * {
@@ -118,7 +123,7 @@
             align-items: center;
             justify-content: center;
             gap: 0.75rem;
-            margin-bottom: 3rem;
+            margin-bottom: 2rem;
         }
         
         .line-badge {
@@ -149,6 +154,108 @@
             content: '→';
             margin-right: 0.5rem;
             color: var(--line-color);
+        }
+        
+        /* Real-time indicator */
+        .realtime-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.3rem 0.8rem;
+            background: rgba(0, 255, 100, 0.15);
+            border: 1px solid rgba(0, 255, 100, 0.3);
+            border-radius: 20px;
+            font-size: 0.75rem;
+            color: #00ff64;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-left: 1rem;
+        }
+        
+        .realtime-badge::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: #00ff64;
+            border-radius: 50%;
+            animation: blink 1s ease-in-out infinite;
+        }
+        
+        .schedule-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.3rem 0.8rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-left: 1rem;
+        }
+        
+        /* Service alerts banner */
+        .alerts-banner {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            overflow: hidden;
+        }
+        
+        .alert-item {
+            padding: 0.75rem 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            animation: slideIn 0.3s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateY(-100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        .alert-item.critical {
+            background: linear-gradient(90deg, rgba(255, 68, 68, 0.9), rgba(200, 50, 50, 0.9));
+        }
+        
+        .alert-item.warning {
+            background: linear-gradient(90deg, rgba(255, 170, 0, 0.9), rgba(200, 130, 0, 0.9));
+            color: #000;
+        }
+        
+        .alert-item.info {
+            background: linear-gradient(90deg, rgba(74, 158, 255, 0.2), rgba(50, 120, 200, 0.2));
+            border-bottom: 1px solid rgba(74, 158, 255, 0.3);
+        }
+        
+        .alert-icon {
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+        
+        .alert-text {
+            flex: 1;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        
+        .alert-dismiss {
+            background: none;
+            border: none;
+            color: inherit;
+            cursor: pointer;
+            padding: 0.5rem;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+        }
+        
+        .alert-dismiss:hover {
+            opacity: 1;
         }
         
         /* Main countdown */
@@ -234,6 +341,14 @@
             opacity: 1;
         }
         
+        .upcoming-item.realtime {
+            opacity: 0.9;
+        }
+        
+        .upcoming-item.realtime .upcoming-minutes {
+            color: var(--text-primary);
+        }
+        
         .upcoming-minutes {
             font-family: 'JetBrains Mono', monospace;
             font-size: clamp(2rem, 6vw, 3.5rem);
@@ -245,6 +360,14 @@
             font-size: clamp(0.8rem, 2vw, 1rem);
             color: var(--text-secondary);
             font-weight: 300;
+        }
+        
+        .upcoming-rt-dot {
+            width: 6px;
+            height: 6px;
+            background: #00ff64;
+            border-radius: 50%;
+            margin-top: 0.5rem;
         }
         
         .separator {
@@ -277,6 +400,10 @@
         .status-dot.error {
             background: #ff4444;
             animation: none;
+        }
+        
+        .status-dot.realtime {
+            background: #00ff64;
         }
         
         @keyframes blink {
@@ -345,6 +472,10 @@
             .separator {
                 display: none;
             }
+            
+            .line-info {
+                flex-wrap: wrap;
+            }
         }
         
         /* Fullscreen button */
@@ -368,10 +499,17 @@
             border-color: var(--line-color);
             color: var(--line-color);
         }
+        
+        /* Has alerts - shift content down */
+        body.has-alerts .container {
+            padding-top: 4rem;
+        }
     </style>
 </head>
 <body>
     <button class="fullscreen-btn" onclick="toggleFullscreen()">⛶ Fullscreen</button>
+    
+    <div class="alerts-banner" id="alertsBanner"></div>
     
     <div class="container" id="app">
         <div class="loading">
@@ -390,12 +528,16 @@
         const API_BASE = window.location.origin;
         const REFRESH_INTERVAL = 30000; // 30 seconds
         const COUNTDOWN_INTERVAL = 1000; // 1 second
+        const ALERTS_REFRESH_INTERVAL = 60000; // 60 seconds
         
         // State
         let config = null;
         let departures = [];
+        let alerts = [];
         let lastFetchTime = null;
         let countdownTimer = null;
+        let isRealtime = false;
+        let dismissedAlerts = new Set();
         
         // Line colors mapping
         const LINE_COLORS = {
@@ -433,6 +575,7 @@
                 if (!response.ok) throw new Error('Failed to fetch departures');
                 const data = await response.json();
                 departures = data.departures;
+                isRealtime = data.realtime_active;
                 lastFetchTime = new Date();
                 updateStatus(true);
                 return data;
@@ -443,6 +586,56 @@
             }
         }
         
+        // Fetch service alerts
+        async function fetchAlerts() {
+            if (!config || !config.alerts_enabled) return;
+            
+            try {
+                const response = await fetch(`${API_BASE}/api/alerts`);
+                if (!response.ok) throw new Error('Failed to fetch alerts');
+                const data = await response.json();
+                
+                // Filter out dismissed alerts
+                alerts = (data.alerts || []).filter(a => !dismissedAlerts.has(a.id));
+                renderAlerts();
+            } catch (error) {
+                console.error('Alerts error:', error);
+            }
+        }
+        
+        // Dismiss an alert
+        function dismissAlert(alertId) {
+            dismissedAlerts.add(alertId);
+            alerts = alerts.filter(a => a.id !== alertId);
+            renderAlerts();
+        }
+        
+        // Render alerts banner
+        function renderAlerts() {
+            const banner = document.getElementById('alertsBanner');
+            
+            if (!alerts || alerts.length === 0) {
+                banner.innerHTML = '';
+                document.body.classList.remove('has-alerts');
+                return;
+            }
+            
+            document.body.classList.add('has-alerts');
+            
+            // Only show the most important alert
+            const alert = alerts[0];
+            const icon = alert.severity === 'critical' ? '⚠️' : 
+                        alert.severity === 'warning' ? '⚡' : 'ℹ️';
+            
+            banner.innerHTML = `
+                <div class="alert-item ${alert.severity}">
+                    <span class="alert-icon">${icon}</span>
+                    <span class="alert-text">${alert.title || alert.description}</span>
+                    <button class="alert-dismiss" onclick="dismissAlert('${alert.id}')" title="Dismiss">✕</button>
+                </div>
+            `;
+        }
+        
         // Update status indicator
         function updateStatus(connected, message = null) {
             const dot = document.getElementById('statusDot');
@@ -450,13 +643,20 @@
             
             if (connected) {
                 dot.classList.remove('error');
+                if (isRealtime) {
+                    dot.classList.add('realtime');
+                } else {
+                    dot.classList.remove('realtime');
+                }
                 const time = new Date().toLocaleTimeString('en-CA', { 
                     hour: '2-digit', 
                     minute: '2-digit' 
                 });
-                text.textContent = `Updated ${time}`;
+                const source = isRealtime ? 'LIVE' : 'Schedule';
+                text.textContent = `${source} • ${time}`;
             } else {
                 dot.classList.add('error');
+                dot.classList.remove('realtime');
                 text.textContent = message || 'Connection error';
             }
         }
@@ -482,12 +682,18 @@
                 return;
             }
             
+            // Data source badge
+            const sourceBadge = isRealtime 
+                ? '<span class="realtime-badge">Live</span>'
+                : '<span class="schedule-badge">Schedule</span>';
+            
             if (!departures || departures.length === 0) {
                 app.innerHTML = `
                     <h1 class="station-name">${config.station}</h1>
                     <div class="line-info">
                         <span class="line-badge ${config.line === 'yellow' ? 'yellow-text' : ''}">${config.line}</span>
                         <span class="direction">${config.direction}</span>
+                        ${sourceBadge}
                     </div>
                     <div class="no-service">No upcoming departures</div>
                     <div class="no-service-sub">Service may have ended for today</div>
@@ -507,9 +713,10 @@
             let upcomingHtml = '';
             if (upcomingDepartures.length > 0) {
                 const items = upcomingDepartures.map(d => `
-                    <div class="upcoming-item">
+                    <div class="upcoming-item ${d.realtime ? 'realtime' : ''}">
                         <span class="upcoming-minutes">${d.currentMinutes}</span>
                         <span class="upcoming-time">${d.time}</span>
+                        ${d.realtime ? '<div class="upcoming-rt-dot"></div>' : ''}
                     </div>
                 `).join('<span class="separator">•</span>');
                 
@@ -526,6 +733,7 @@
                 <div class="line-info">
                     <span class="line-badge ${config.line === 'yellow' ? 'yellow-text' : ''}">${config.line}</span>
                     <span class="direction">${config.direction}</span>
+                    ${sourceBadge}
                 </div>
                 
                 <div class="countdown-wrapper">
@@ -558,6 +766,9 @@
             // Fetch initial departures
             await fetchDepartures();
             
+            // Fetch alerts
+            await fetchAlerts();
+            
             // Initial render
             render();
             
@@ -569,6 +780,9 @@
                 await fetchDepartures();
                 render();
             }, REFRESH_INTERVAL);
+            
+            // Set up alerts refresh
+            setInterval(fetchAlerts, ALERTS_REFRESH_INTERVAL);
         }
         
         // Start the app
@@ -576,4 +790,3 @@
     </script>
 </body>
 </html>
-
