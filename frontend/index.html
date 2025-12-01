@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Metro Display</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Line colors */
+            --orange: #f58220;
+            --green: #00a651;
+            --blue: #0072bc;
+            --yellow: #ffe400;
+            
+            /* Current line (set by JS) */
+            --line-color: var(--orange);
+            --line-glow: rgba(245, 130, 32, 0.4);
+            
+            /* Background */
+            --bg-primary: #050505;
+            --bg-secondary: #0c0c0c;
+            --bg-card: #111111;
+            
+            /* Text */
+            --text-primary: #ffffff;
+            --text-secondary: #888888;
+            --text-muted: #444444;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html, body {
+            height: 100%;
+            overflow: hidden;
+        }
+        
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            position: relative;
+        }
+        
+        /* Ambient background glow */
+        body::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(
+                ellipse at center,
+                var(--line-glow) 0%,
+                transparent 50%
+            );
+            opacity: 0.15;
+            pointer-events: none;
+            animation: pulse 8s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 0.1; transform: scale(1); }
+            50% { opacity: 0.2; transform: scale(1.05); }
+        }
+        
+        /* Scanline effect for CRT feel */
+        body::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 0, 0, 0.03) 2px,
+                rgba(0, 0, 0, 0.03) 4px
+            );
+            pointer-events: none;
+        }
+        
+        .container {
+            text-align: center;
+            z-index: 1;
+            padding: 2rem;
+            width: 100%;
+            max-width: 800px;
+        }
+        
+        /* Station header */
+        .station-name {
+            font-size: clamp(2rem, 8vw, 4rem);
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            margin-bottom: 0.25em;
+            color: var(--text-primary);
+            text-shadow: 0 0 40px var(--line-glow);
+        }
+        
+        .line-info {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-bottom: 3rem;
+        }
+        
+        .line-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1.25rem;
+            background: var(--line-color);
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #000;
+        }
+        
+        .line-badge.yellow-text {
+            color: #000;
+        }
+        
+        .direction {
+            font-size: clamp(1rem, 3vw, 1.4rem);
+            color: var(--text-secondary);
+            font-weight: 300;
+        }
+        
+        .direction::before {
+            content: '→';
+            margin-right: 0.5rem;
+            color: var(--line-color);
+        }
+        
+        /* Main countdown */
+        .countdown-wrapper {
+            margin: 2rem 0;
+        }
+        
+        .countdown-label {
+            font-size: clamp(1rem, 3vw, 1.5rem);
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.3em;
+            margin-bottom: 0.5rem;
+            font-weight: 300;
+        }
+        
+        .countdown {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: clamp(6rem, 25vw, 14rem);
+            font-weight: 700;
+            line-height: 1;
+            color: var(--line-color);
+            text-shadow: 
+                0 0 20px var(--line-glow),
+                0 0 60px var(--line-glow),
+                0 0 100px var(--line-glow);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes glow {
+            from {
+                text-shadow: 
+                    0 0 20px var(--line-glow),
+                    0 0 60px var(--line-glow);
+            }
+            to {
+                text-shadow: 
+                    0 0 30px var(--line-glow),
+                    0 0 80px var(--line-glow),
+                    0 0 120px var(--line-glow);
+            }
+        }
+        
+        .countdown-unit {
+            font-size: clamp(1.5rem, 5vw, 3rem);
+            color: var(--text-secondary);
+            font-weight: 300;
+            margin-left: 0.25em;
+            letter-spacing: 0.1em;
+        }
+        
+        /* Upcoming departures */
+        .upcoming {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--text-muted);
+        }
+        
+        .upcoming-label {
+            font-size: clamp(0.8rem, 2vw, 1rem);
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            margin-bottom: 1rem;
+        }
+        
+        .upcoming-times {
+            display: flex;
+            justify-content: center;
+            gap: clamp(1.5rem, 5vw, 3rem);
+            flex-wrap: wrap;
+        }
+        
+        .upcoming-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+        }
+        
+        .upcoming-item:hover {
+            opacity: 1;
+        }
+        
+        .upcoming-minutes {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: clamp(2rem, 6vw, 3.5rem);
+            font-weight: 400;
+            color: var(--text-primary);
+        }
+        
+        .upcoming-time {
+            font-size: clamp(0.8rem, 2vw, 1rem);
+            color: var(--text-secondary);
+            font-weight: 300;
+        }
+        
+        .separator {
+            color: var(--text-muted);
+            font-size: 2rem;
+            align-self: center;
+        }
+        
+        /* Status indicators */
+        .status {
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--green);
+            animation: blink 2s ease-in-out infinite;
+        }
+        
+        .status-dot.error {
+            background: #ff4444;
+            animation: none;
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+        
+        /* Loading state */
+        .loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 3px solid var(--text-muted);
+            border-top-color: var(--line-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .loading-text {
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+        }
+        
+        /* Error state */
+        .error-message {
+            color: #ff6b6b;
+            font-size: 1.2rem;
+            padding: 2rem;
+            background: rgba(255, 107, 107, 0.1);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 107, 107, 0.3);
+        }
+        
+        /* No service */
+        .no-service {
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            color: var(--text-secondary);
+        }
+        
+        .no-service-sub {
+            font-size: clamp(1rem, 2.5vw, 1.25rem);
+            color: var(--text-muted);
+            margin-top: 1rem;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 600px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .upcoming-times {
+                gap: 1rem;
+            }
+            
+            .separator {
+                display: none;
+            }
+        }
+        
+        /* Fullscreen button */
+        .fullscreen-btn {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            background: transparent;
+            border: 1px solid var(--text-muted);
+            color: var(--text-muted);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+        
+        .fullscreen-btn:hover {
+            border-color: var(--line-color);
+            color: var(--line-color);
+        }
+    </style>
+</head>
+<body>
+    <button class="fullscreen-btn" onclick="toggleFullscreen()">⛶ Fullscreen</button>
+    
+    <div class="container" id="app">
+        <div class="loading">
+            <div class="loading-spinner"></div>
+            <div class="loading-text">Loading metro data...</div>
+        </div>
+    </div>
+    
+    <div class="status">
+        <div class="status-dot" id="statusDot"></div>
+        <span id="statusText">Connecting...</span>
+    </div>
+
+    <script>
+        // Configuration
+        const API_BASE = window.location.origin;
+        const REFRESH_INTERVAL = 30000; // 30 seconds
+        const COUNTDOWN_INTERVAL = 1000; // 1 second
+        
+        // State
+        let config = null;
+        let departures = [];
+        let lastFetchTime = null;
+        let countdownTimer = null;
+        
+        // Line colors mapping
+        const LINE_COLORS = {
+            orange: { color: '#f58220', glow: 'rgba(245, 130, 32, 0.4)' },
+            green: { color: '#00a651', glow: 'rgba(0, 166, 81, 0.4)' },
+            blue: { color: '#0072bc', glow: 'rgba(0, 114, 188, 0.4)' },
+            yellow: { color: '#ffe400', glow: 'rgba(255, 228, 0, 0.4)' }
+        };
+        
+        // Set line color CSS variables
+        function setLineColor(line) {
+            const colors = LINE_COLORS[line.toLowerCase()] || LINE_COLORS.orange;
+            document.documentElement.style.setProperty('--line-color', colors.color);
+            document.documentElement.style.setProperty('--line-glow', colors.glow);
+        }
+        
+        // Fetch configuration
+        async function fetchConfig() {
+            try {
+                const response = await fetch(`${API_BASE}/api/config`);
+                if (!response.ok) throw new Error('Failed to fetch config');
+                config = await response.json();
+                setLineColor(config.line);
+                return config;
+            } catch (error) {
+                console.error('Config error:', error);
+                return null;
+            }
+        }
+        
+        // Fetch departures
+        async function fetchDepartures() {
+            try {
+                const response = await fetch(`${API_BASE}/api/next-departures`);
+                if (!response.ok) throw new Error('Failed to fetch departures');
+                const data = await response.json();
+                departures = data.departures;
+                lastFetchTime = new Date();
+                updateStatus(true);
+                return data;
+            } catch (error) {
+                console.error('Fetch error:', error);
+                updateStatus(false, error.message);
+                return null;
+            }
+        }
+        
+        // Update status indicator
+        function updateStatus(connected, message = null) {
+            const dot = document.getElementById('statusDot');
+            const text = document.getElementById('statusText');
+            
+            if (connected) {
+                dot.classList.remove('error');
+                const time = new Date().toLocaleTimeString('en-CA', { 
+                    hour: '2-digit', 
+                    minute: '2-digit' 
+                });
+                text.textContent = `Updated ${time}`;
+            } else {
+                dot.classList.add('error');
+                text.textContent = message || 'Connection error';
+            }
+        }
+        
+        // Calculate current minutes (accounting for time passed since fetch)
+        function getCurrentMinutes(originalMinutes) {
+            if (!lastFetchTime) return originalMinutes;
+            const elapsed = Math.floor((new Date() - lastFetchTime) / 60000);
+            return Math.max(0, originalMinutes - elapsed);
+        }
+        
+        // Render the display
+        function render() {
+            const app = document.getElementById('app');
+            
+            if (!config) {
+                app.innerHTML = `
+                    <div class="error-message">
+                        Unable to load configuration.<br>
+                        Please check if the server is running.
+                    </div>
+                `;
+                return;
+            }
+            
+            if (!departures || departures.length === 0) {
+                app.innerHTML = `
+                    <h1 class="station-name">${config.station}</h1>
+                    <div class="line-info">
+                        <span class="line-badge ${config.line === 'yellow' ? 'yellow-text' : ''}">${config.line}</span>
+                        <span class="direction">${config.direction}</span>
+                    </div>
+                    <div class="no-service">No upcoming departures</div>
+                    <div class="no-service-sub">Service may have ended for today</div>
+                `;
+                return;
+            }
+            
+            // Get current countdown values
+            const nextDeparture = departures[0];
+            const currentMinutes = getCurrentMinutes(nextDeparture.minutes);
+            const upcomingDepartures = departures.slice(1).map(d => ({
+                ...d,
+                currentMinutes: getCurrentMinutes(d.minutes)
+            }));
+            
+            // Build upcoming HTML
+            let upcomingHtml = '';
+            if (upcomingDepartures.length > 0) {
+                const items = upcomingDepartures.map(d => `
+                    <div class="upcoming-item">
+                        <span class="upcoming-minutes">${d.currentMinutes}</span>
+                        <span class="upcoming-time">${d.time}</span>
+                    </div>
+                `).join('<span class="separator">•</span>');
+                
+                upcomingHtml = `
+                    <div class="upcoming">
+                        <div class="upcoming-label">Also arriving</div>
+                        <div class="upcoming-times">${items}</div>
+                    </div>
+                `;
+            }
+            
+            app.innerHTML = `
+                <h1 class="station-name">${config.station}</h1>
+                <div class="line-info">
+                    <span class="line-badge ${config.line === 'yellow' ? 'yellow-text' : ''}">${config.line}</span>
+                    <span class="direction">${config.direction}</span>
+                </div>
+                
+                <div class="countdown-wrapper">
+                    <div class="countdown-label">Next metro</div>
+                    <div class="countdown">
+                        ${currentMinutes}<span class="countdown-unit">min</span>
+                    </div>
+                </div>
+                
+                ${upcomingHtml}
+            `;
+        }
+        
+        // Toggle fullscreen
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => {
+                    console.log('Fullscreen error:', err);
+                });
+            } else {
+                document.exitFullscreen();
+            }
+        }
+        
+        // Initialize
+        async function init() {
+            // Fetch config first
+            await fetchConfig();
+            
+            // Fetch initial departures
+            await fetchDepartures();
+            
+            // Initial render
+            render();
+            
+            // Set up countdown timer (updates display every second)
+            countdownTimer = setInterval(render, COUNTDOWN_INTERVAL);
+            
+            // Set up data refresh
+            setInterval(async () => {
+                await fetchDepartures();
+                render();
+            }, REFRESH_INTERVAL);
+        }
+        
+        // Start the app
+        init();
+    </script>
+</body>
+</html>
+
