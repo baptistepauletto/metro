@@ -1,182 +1,331 @@
-# STM Metro Display
+# LED Matrix Display - Montreal Metro
 
-A proof-of-concept web application that displays real-time metro departure times for Montreal's STM network. Designed for a kiosk-style display on a Raspberry Pi.
+A real-time metro departure countdown display for the **Adafruit Matrix Portal** with 64×32 LED matrix. Shows the next metro departure time based on STM schedule data.
 
-![Preview](https://via.placeholder.com/800x400/050505/f58220?text=ROSEMONT+•+3+min)
+**No server required!** Schedule runs standalone on the Matrix Portal hardware.
 
-## Features
+![Matrix Portal Display](https://via.placeholder.com/640x320/000000/ff6b00?text=ROSEMONT+%E2%80%A2+5+MIN)
 
-- **Real-time countdown** to the next metro departure
-- **Dark mode kiosk UI** optimized for distant viewing
-- **Auto-refresh** every 30 seconds
-- **Configurable** station, line, and direction
-- **Fullscreen mode** for dedicated displays
-- **Responsive design** works on any screen size
+## 🎯 Features
 
-## Quick Start
+- ✅ **64×32 LED Matrix** - Perfect for Adafruit Matrix Portal M4
+- ✅ **Standalone Operation** - No server needed, runs completely on-device
+- ✅ **Web Simulator** - Test your display in browser before deploying
+- ✅ **Static GTFS Schedule** - Load once, runs for months
+- ✅ **Line Color Coding** - Orange, Green, Blue, or Yellow metro lines
+- ✅ **WiFi Time Sync** - Accurate countdown using network time
+- ✅ **Simple Updates** - Regenerate schedule 2-4 times per year
 
-### 1. Install Dependencies
+## 🚀 Quick Start
+
+### 1. Setup Your Computer
 
 ```bash
-# Navigate to project directory
+# Clone or download this project
 cd metro
 
-# Create virtual environment (recommended)
-python -m venv venv
-
-# Activate virtual environment
-# On Windows:
-venv\Scripts\activate
-# On macOS/Linux:
-source venv/bin/activate
-
-# Install dependencies
+# Install Python dependencies (for schedule builder)
 pip install -r requirements.txt
 ```
 
-### 2. Configure Your Station
+### 2. Download GTFS Data
 
-Edit `backend/config.py` to set your station:
+STM (Montreal transit) publishes their schedule data in GTFS format:
+
+1. Visit [STM Developers Portal](https://www.stm.info/en/about/developers)
+2. Download the GTFS static data ZIP file
+3. Extract all `.txt` files to the `data/` folder
+
+The `data/` folder should contain:
+- `stops.txt`
+- `routes.txt`
+- `trips.txt`
+- `stop_times.txt`
+- `calendar.txt`
+- `calendar_dates.txt`
+
+### 3. Configure Your Station
+
+Edit `build_schedule.py` to set your station and line:
 
 ```python
 STATION_NAME = "Rosemont"      # Your metro station
-LINE_COLOR = "orange"          # orange, green, blue, or yellow
-DIRECTION = "Côte-Vertu"       # Terminus station name
+LINE_NUMBER = "2"              # 1=Green, 2=Orange, 4=Yellow, 5=Blue
+DIRECTION = "Côte-Vertu"       # Direction of travel (terminus name)
 ```
 
 **Direction options by line:**
-- **Orange Line:** `Côte-Vertu` or `Montmorency`
-- **Green Line:** `Angrignon` or `Honoré-Beaugrand`
-- **Blue Line:** `Snowdon` or `Saint-Michel`
-- **Yellow Line:** `Berri-UQAM` or `Longueuil–Université-de-Sherbrooke`
+- **Orange Line (2):** `Côte-Vertu` or `Montmorency`
+- **Green Line (1):** `Angrignon` or `Honoré-Beaugrand`
+- **Blue Line (5):** `Snowdon` or `Saint-Michel`
+- **Yellow Line (4):** `Berri-UQAM` or `Longueuil–Université-de-Sherbrooke`
 
-### 3. Run the Server
+### 4. Build Your Schedule
 
 ```bash
-cd backend
-python main.py
+python build_schedule.py
 ```
 
-The server will:
-1. Download STM GTFS data automatically (first run only, ~15MB)
-2. Load the schedule data into memory
-3. Start the web server at `http://localhost:8000`
+This creates `schedule.json` - a compact file with all departure times for your station.
 
-### 4. View the Display
+**When to rebuild:**
+- When STM updates their schedule (typically 2-4 times per year)
+- After major service changes or holidays
+- When switching to a different station
 
-Open your browser to: **http://localhost:8000**
+### 5. Test in Simulator
 
-Click the "Fullscreen" button for the best kiosk experience.
+Open `simulator/index.html` in your browser:
 
-## API Endpoints
+1. Click "Choose File" and load your `schedule.json`
+2. Adjust the test minutes to see different countdowns
+3. Use the scale slider to zoom in/out
 
-| Endpoint | Description |
-|----------|-------------|
-| `GET /` | Serves the frontend display |
-| `GET /api/config` | Returns current configuration |
-| `GET /api/next-departures` | Returns upcoming departures |
-| `GET /api/health` | Health check endpoint |
+This shows **exactly** what will appear on your Matrix Portal!
 
-### Query Parameters for `/api/next-departures`
+### 6. Deploy to Matrix Portal
 
-You can override the config with query parameters:
+See [`circuitpython/README.md`](circuitpython/README.md) for complete hardware setup instructions.
 
-```
-GET /api/next-departures?station=Berri-UQAM&line=green&direction=Angrignon&count=5
-```
+**Quick version:**
+1. Install CircuitPython on your Matrix Portal
+2. Copy required libraries to `CIRCUITPY/lib/`
+3. Copy `circuitpython/code.py` to `CIRCUITPY/`
+4. Copy `circuitpython/secrets.py` to `CIRCUITPY/` (edit with your WiFi)
+5. Copy `schedule.json` to `CIRCUITPY/`
+6. Done! Display starts automatically
 
-## Project Structure
+## 📁 Project Structure
 
 ```
 metro/
-├── backend/
-│   ├── main.py           # FastAPI server
-│   ├── gtfs_parser.py    # GTFS data loading and querying
-│   └── config.py         # Station/line configuration
-├── frontend/
-│   └── index.html        # Kiosk-style display
-├── data/                  # GTFS data (auto-downloaded)
-├── requirements.txt
-└── README.md
+├── build_schedule.py        # GTFS → JSON converter (run on computer)
+├── schedule.json            # Generated schedule data (copy to Matrix Portal)
+├── requirements.txt         # Python dependencies for build script
+│
+├── data/                    # GTFS data files (download from STM)
+│   ├── stops.txt
+│   ├── routes.txt
+│   ├── trips.txt
+│   ├── stop_times.txt
+│   └── ...
+│
+├── simulator/               # Web-based display simulator
+│   └── index.html          # Open in browser to test
+│
+├── circuitpython/          # Code for Matrix Portal hardware
+│   ├── code.py            # Main program (copy to CIRCUITPY)
+│   ├── secrets.py         # WiFi config (edit and copy)
+│   └── README.md          # Hardware setup instructions
+│
+└── README.md               # This file
 ```
 
-## Deploying on Raspberry Pi
+## 🔧 How It Works
 
-### Hardware Requirements
-- Raspberry Pi 3B+ or newer
-- MicroSD card (8GB+)
-- HDMI display
-- Power supply
+### Architecture
 
-### Setup Steps
+```
+┌──────────────────┐         ┌─────────────────┐
+│   Your Computer  │         │  Matrix Portal  │
+│                  │         │  (CircuitPython) │
+│  1. Download     │         │                  │
+│     GTFS data    │         │  1. Load JSON    │
+│                  │   USB   │  2. Get WiFi time│
+│  2. Run build    ├────────►│  3. Find next    │
+│     script       │  Copy   │     departure    │
+│                  │  Files  │  4. Display      │
+│  3. Generate     │         │     countdown    │
+│     schedule.json│         │  5. Repeat       │
+└──────────────────┘         └─────────────────┘
 
-1. Install Raspberry Pi OS (Lite or Desktop)
-2. Clone this repository
-3. Install Python dependencies
-4. Set up auto-start on boot:
-
-```bash
-# Create systemd service
-sudo nano /etc/systemd/system/metro-display.service
+   Run 2-4x/year              Runs 24/7
 ```
 
-```ini
-[Unit]
-Description=STM Metro Display
-After=network.target
+### Schedule File Format
 
-[Service]
-Type=simple
-User=pi
-WorkingDirectory=/home/pi/metro/backend
-ExecStart=/home/pi/metro/venv/bin/python main.py
-Restart=always
+The `schedule.json` file contains pre-computed departure times:
 
-[Install]
-WantedBy=multi-user.target
+```json
+{
+  "station": "Rosemont",
+  "line": "2",
+  "direction": "Côte-Vertu",
+  "generated": "2026-01-27T12:00:00",
+  "schedule": {
+    "monday": ["06:00", "06:05", "06:10", ..., "00:55"],
+    "tuesday": ["06:00", "06:05", ...],
+    ...
+  }
+}
 ```
 
-```bash
-# Enable and start service
-sudo systemctl enable metro-display
-sudo systemctl start metro-display
+The Matrix Portal:
+1. Loads this file from storage
+2. Gets current time via WiFi (NTP)
+3. Finds next departure from the list
+4. Calculates and displays countdown
+5. No server or API calls needed!
+
+## 🎨 Display Layout (64×32)
+
+```
+Row 0-7:   STATION NAME (centered, line color)
+Row 9:     ═══════════ (line color separator)
+Row 13-19: ## (large countdown number)
+Row 24-30: MIN (dimmed label)
 ```
 
-5. Open Chromium in kiosk mode:
+## 🔌 Hardware Requirements
 
-```bash
-chromium-browser --kiosk --noerrdialogs http://localhost:8000
+- **Adafruit Matrix Portal M4** (~$25 USD)
+- **64×32 RGB LED Matrix Panel** with HUB75 interface (~$30-50 USD)
+- **5V 4A Power Supply** for the matrix (~$10 USD)
+- **USB-C Cable** for programming
+
+Total cost: ~$70-90 USD
+
+**Where to buy:**
+- [Adafruit](https://www.adafruit.com/product/4745) - Matrix Portal
+- [Adafruit](https://www.adafruit.com/product/2278) - 64x32 Matrix
+
+## 📊 Data Source
+
+This project uses STM's official GTFS (General Transit Feed Specification) data:
+
+- **Download:** [stm.info/en/about/developers](https://www.stm.info/en/about/developers)
+- **Format:** GTFS Static (schedule data)
+- **Updates:** Quarterly or as announced by STM
+- **License:** Check STM's terms of use
+
+## 🐛 Troubleshooting
+
+### Schedule Builder Issues
+
+**"Station not found"**
+- Check spelling matches GTFS data exactly
+- Try partial names (e.g., "Rose" instead of "Rosemont")
+- Check `data/stops.txt` for exact station names
+
+**"No trips found"**
+- Verify LINE_NUMBER is correct (1, 2, 4, or 5)
+- Check DIRECTION matches a terminus name
+- Look in `data/routes.txt` and `data/trips.txt`
+
+**"No departure times"**
+- Ensure GTFS data is complete
+- Check calendar.txt has service_ids
+- Verify stop_times.txt is not empty
+
+### Simulator Issues
+
+**Blank display**
+- Clear browser cache and reload
+- Check browser console (F12) for errors
+- Verify schedule.json is valid JSON
+
+### Hardware Issues
+
+See [`circuitpython/README.md`](circuitpython/README.md) for Matrix Portal troubleshooting.
+
+## 🔄 Updating Schedule
+
+When STM releases new GTFS data:
+
+1. Download new GTFS files to `data/`
+2. Run `python build_schedule.py`
+3. Copy new `schedule.json` to Matrix Portal via USB
+4. Reboot Matrix Portal (press reset button)
+
+**That's it!** No code changes needed.
+
+## ⚙️ Customization
+
+### Change Station or Line
+
+Edit `build_schedule.py` and rebuild:
+
+```python
+STATION_NAME = "Berri-UQAM"    # Your station
+LINE_NUMBER = "2"               # Your line
+DIRECTION = "Montmorency"       # Your direction
 ```
 
-## Upgrading to Real-Time Data
+### Adjust Display Brightness
 
-This POC uses STM's static GTFS schedule. For real-time updates:
+Edit `circuitpython/code.py`:
 
-1. Register at [STM Developer Portal](https://www.stm.info/fr/a-propos/developpeurs)
-2. Get API access for GTFS-Realtime feed
-3. Update `gtfs_parser.py` to fetch real-time trip updates
+```python
+BRIGHTNESS = 0.3  # 0.0 (off) to 1.0 (max)
+```
 
-## Troubleshooting
+### Change Line Colors
 
-### "No upcoming departures"
-- Check if the station name matches exactly (case-insensitive)
-- Verify the line color and direction are correct
-- Metro service may have ended for the day
+Edit `circuitpython/code.py`:
 
-### GTFS data download fails
-- Check your internet connection
-- Try running `python gtfs_parser.py` directly to see error details
+```python
+LINE_COLORS = {
+    "2": (217, 87, 0),  # Orange - change RGB values
+    ...
+}
+```
 
-### Display not updating
-- Check browser console for errors
-- Verify the server is running (`/api/health` endpoint)
+### Change Update Frequency
 
-## License
+Edit `circuitpython/code.py`:
 
-MIT License - Feel free to use and modify for your own projects!
+```python
+UPDATE_INTERVAL = 30  # Seconds between display updates
+```
 
-## Acknowledgments
+## 🌟 Why Standalone?
+
+**Pros:**
+✅ No server to maintain 24/7  
+✅ No monthly hosting costs  
+✅ Works offline (after WiFi time sync)  
+✅ Simple to set up  
+✅ Fast and reliable  
+✅ Low power consumption
+
+**Cons:**
+❌ No real-time delay updates (schedule only)  
+❌ Must manually update schedule periodically  
+❌ No service alerts or disruptions
+
+**Perfect for:** Home projects, personal use, metro stations with reliable schedules
+
+## 🚧 Future Enhancements
+
+- [ ] Scrolling text for long station names
+- [ ] Show multiple upcoming departures
+- [ ] Service alert icons (via optional API)
+- [ ] Brightness auto-adjust (time of day)
+- [ ] Sleep mode during off-hours
+- [ ] Support for multiple stations
+- [ ] Web interface for remote config
+
+## 📝 License
+
+MIT License - Free to use and modify for personal projects.
+
+## 🙏 Acknowledgments
 
 - [STM](https://www.stm.info/) for providing open GTFS data
+- [Adafruit](https://www.adafruit.com/) for the Matrix Portal hardware
 - [GTFS Specification](https://gtfs.org/) for the transit data standard
+- Montreal metro riders 🚇
 
+## 💡 Tips
+
+- **Test first:** Always test in the simulator before deploying to hardware
+- **Backup:** Keep a copy of your working `schedule.json`
+- **Updates:** Set a reminder to check for GTFS updates quarterly
+- **Power:** Use a quality 5V power supply - cheap ones cause flickering
+- **WiFi:** Matrix Portal only supports 2.4GHz WiFi, not 5GHz
+
+---
+
+**Made with 🚇 for Montreal metro riders**
+
+**Need help?** Check the detailed hardware guide in [`circuitpython/README.md`](circuitpython/README.md)
