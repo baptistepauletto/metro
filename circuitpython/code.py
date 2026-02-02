@@ -9,10 +9,14 @@ Hardware:
 
 Setup:
 1. Install CircuitPython on Matrix Portal
-2. Copy code.py (this file) to CIRCUITPY drive
-3. Copy schedule.json to CIRCUITPY drive
-4. Copy secrets.py with WiFi credentials
-5. Install required libraries (see below)
+2. Run build_schedule_micro.py to generate a memory-efficient schedule.json
+3. Copy code.py (this file) to CIRCUITPY drive
+4. Copy the generated schedule.json to CIRCUITPY drive
+5. Copy secrets.py with WiFi credentials
+6. Install required libraries (see below)
+
+Note: The Matrix Portal has limited RAM. Use build_schedule_micro.py to create
+a lightweight schedule file (~600 bytes) instead of the full schedule (~29 KB)
 
 Required CircuitPython Libraries:
 - adafruit_matrixportal
@@ -34,7 +38,7 @@ from adafruit_matrixportal.network import Network
 # ============================================================================
 
 SCHEDULE_FILE = "/schedule.json"
-UPDATE_INTERVAL = 30  # Update display every 30 seconds
+UPDATE_INTERVAL = 15  # Update display every 30 seconds
 BRIGHTNESS = 0.3      # Display brightness (0.0 to 1.0)
 
 # Line colors (RGB for LED matrix)
@@ -65,10 +69,12 @@ def load_schedule():
     try:
         with open(SCHEDULE_FILE, 'r') as f:
             data = json.load(f)
-        print(f"✓ Schedule loaded for {data['station']}")
+        print(f"Schedule loaded for {data['station']}")
         return data
     except Exception as e:
-        print(f"❌ Error loading schedule: {e}")
+        print(f"Error loading schedule: {e}")
+        import traceback
+        traceback.print_exception(e)
         return None
 
 
@@ -137,7 +143,7 @@ def find_next_departure(schedule_data):
 def clear_display():
     """Clear the display."""
     group = displayio.Group()
-    display.show(group)
+    display.root_group = group
 
 
 def draw_countdown(minutes, station_name, line_color):
@@ -190,7 +196,7 @@ def draw_countdown(minutes, station_name, line_color):
     )
     group.append(min_label)
     
-    display.show(group)
+    display.root_group = group
 
 
 def show_error(message):
@@ -206,7 +212,7 @@ def show_error(message):
     )
     group.append(error_label)
     
-    display.show(group)
+    display.root_group = group
 
 
 # ============================================================================
@@ -235,9 +241,9 @@ def main():
     print("Syncing time...")
     try:
         network.get_local_time()
-        print("✓ Time synced")
+        print("Time synced")
     except Exception as e:
-        print(f"⚠ Warning: Could not sync time: {e}")
+        print(f"Warning: Could not sync time: {e}")
     
     # Main loop
     last_update = 0
