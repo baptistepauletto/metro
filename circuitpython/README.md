@@ -29,13 +29,26 @@ Copy these folders to `CIRCUITPY/lib/`:
 - `adafruit_esp32spi/`
 - `neopixel.mpy`
 
-### 3. Copy Project Files
+### 3. Generate Memory-Efficient Schedule
+
+**IMPORTANT:** The Matrix Portal has limited RAM (~32KB). You must use the micro schedule builder:
+
+```bash
+# From the project root directory
+python build_schedule_micro.py
+```
+
+This creates a lightweight `schedule.json` (~600 bytes) with only the next 24 hours of departures, instead of the full schedule (~29 KB).
+
+**Run this script daily** to keep the schedule updated, or set up a cron job/scheduled task to automate it.
+
+### 4. Copy Project Files
 
 1. Copy `code.py` to `CIRCUITPY/`
 2. Copy `secrets.py` to `CIRCUITPY/` and edit with your WiFi credentials
-3. Copy `schedule.json` (generated from build_schedule.py) to `CIRCUITPY/`
+3. Copy the generated `circuitpython/schedule.json` to `CIRCUITPY/`
 
-### 4. Configure
+### 5. Configure
 
 Edit `secrets.py` with your WiFi details:
 ```python
@@ -46,7 +59,7 @@ secrets = {
 }
 ```
 
-### 5. Test
+### 6. Test
 
 1. The board should connect to WiFi automatically
 2. Check the serial console for debug output
@@ -66,8 +79,15 @@ secrets = {
 
 ### Schedule Not Loading
 - Ensure `schedule.json` is in the root of CIRCUITPY
-- Check file is valid JSON (test with build_schedule.py first)
+- Check file is valid JSON
 - Check serial console for errors
+
+### Memory Allocation Errors
+If you see "memory allocation failed" errors:
+- **SOLUTION:** Use `build_schedule_micro.py` to generate a lightweight schedule
+- The full schedule.json (~29 KB) is too large for CircuitPython's limited RAM
+- The micro version (~600 bytes) includes only the next 24 hours of departures
+- Remember to regenerate daily to keep schedule current
 
 ## Serial Console
 
