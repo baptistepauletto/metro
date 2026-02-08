@@ -79,8 +79,17 @@ jobs:
         # Restore data.json from backup
         cp /tmp/matrix-data.json data.json
         
+        # Create a simple README for gh-pages
+        echo "# Matrix Portal Data Feed" > README.md
+        echo "" >> README.md
+        echo "This branch contains the data.json file served via GitHub Pages." >> README.md
+        echo "" >> README.md
+        echo "Updated automatically every 5 minutes by GitHub Actions." >> README.md
+        echo "" >> README.md
+        echo "View: https://baptistepauletto.github.io/metro/data.json" >> README.md
+        
         # Add files to gh-pages
-        git add -f data.json README.md
+        git add data.json README.md
         
         # Only commit if there are changes
         if ! git diff --staged --quiet; then
