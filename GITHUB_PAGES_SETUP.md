@@ -47,7 +47,7 @@ git checkout master  # or 'main'
 
 ### 3. Update Config with Your GitHub Username
 
-Edit `config.json` and replace `baptistebisson` with your GitHub username:
+Edit `config.json` and replace `baptistepauletto` with your GitHub username:
 
 ```json
 {
