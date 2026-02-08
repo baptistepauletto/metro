@@ -14,6 +14,11 @@ on:
       - 'schedule.json'
       - 'config.json'
 
+# Grant permissions to push to gh-pages
+permissions:
+  contents: write
+  pages: write
+
 jobs:
   update-data:
     runs-on: ubuntu-latest
@@ -55,7 +60,7 @@ jobs:
           # Only commit if there are changes
           if ! git diff --staged --quiet; then
             git commit -m "Update display data - $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
-            git push origin gh-pages
+            git push https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git gh-pages
             echo "Data updated successfully"
           else
             echo "No changes to commit"
