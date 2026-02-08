@@ -213,7 +213,7 @@ def generate_data_json():
     
     # Build output JSON
     output = {
-        "updated": datetime.utcnow().isoformat() + "Z",
+        "updated": datetime.now(pytz.timezone("America/Montreal")).isoformat(),
         "metro": metro_data if metro_data else {
             "station": config['metro_station'],
             "next_departure": "N/A",
