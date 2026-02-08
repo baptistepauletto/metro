@@ -1,8 +1,0 @@
-# Dependencies for schedule builder (build_schedule.py)
-# Only needed on your computer, NOT on the Matrix Portal
-
-pandas==2.1.3
-
-# Dependencies for GitHub Actions data update script
-requests>=2.31.0
-pytz>=2023.3
