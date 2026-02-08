@@ -79,19 +79,6 @@ jobs:
         # Restore data.json
         cp /tmp/data.json data.json
         
-        # Create a README for gh-pages
-        cat > README.md << 'EOF'
-# Matrix Portal Data Feed
-
-This branch contains the data.json file that is served via GitHub Pages for the Matrix Portal display.
-
-**Do not commit other files to this branch.**
-
-The file is automatically updated every 5 minutes by GitHub Actions.
-
-View the data: https://baptistepauletto.github.io/metro/data.json
-EOF
-        
         # Add files to gh-pages
         git add -f data.json README.md
         
