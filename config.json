@@ -1,0 +1,14 @@
+{
+  "stock_symbol": "XEQT.TO",
+  "metro_station": "Rosemont",
+  "metro_line": "2",
+  "metro_direction": "Côte-Vertu",
+  "timezone": "America/Montreal",
+  "update_interval": 300,
+  "github_pages_url": "https://baptistebisson.github.io/metro/data.json",
+  "display": {
+    "brightness": 0.3,
+    "scroll_speed": 0.05,
+    "line_spacing": 1
+  }
+}

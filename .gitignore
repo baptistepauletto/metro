@@ -24,3 +24,6 @@ data/*.zip
 .DS_Store
 Thumbs.db
 
+# Generated data (only on gh-pages branch)
+data.json
+
