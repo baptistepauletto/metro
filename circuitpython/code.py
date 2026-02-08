@@ -12,6 +12,7 @@ Setup:
 2. Copy this file to CIRCUITPY drive as code.py
 3. Copy secrets.py with WiFi credentials
 4. Install required libraries (see below)
+5. Update DATA_URL with your GitHub username
 
 Data source: GitHub Pages (updated by GitHub Actions every 5 minutes)
 
@@ -37,9 +38,6 @@ from adafruit_matrixportal.network import Network
 # ============================================================================
 
 DATA_URL = "https://baptistepauletto.github.io/metro/data.json"
-
-# Fallback to local schedule if network fails
-FALLBACK_SCHEDULE = "/schedule.json"
 
 # Display settings
 BRIGHTNESS = 0.3
@@ -107,43 +105,6 @@ def fetch_data_from_github():
         gc.collect()
         print(f"Free memory after request: {gc.mem_free()} bytes")
 
-def load_fallback_schedule():
-    """Load local schedule as fallback if network fails."""
-    try:
-        with open(FALLBACK_SCHEDULE, 'r') as f:
-            schedule_data = json.load(f)
-        
-        # Calculate next metro from local schedule
-        days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
-        current_time = time.localtime()
-        current_day = days[current_time.tm_wday]
-        current_time_str = f"{current_time.tm_hour:02d}:{current_time.tm_min:02d}"
-        
-        schedule = schedule_data.get('schedule', {})
-        today_departures = schedule.get(current_day, [])
-        
-        minutes_until = 0
-        next_departure = "N/A"
-        
-        for departure in today_departures:
-            if departure > current_time_str:
-                curr_h, curr_m = current_time.tm_hour, current_time.tm_min
-                dep_h, dep_m = map(int, departure.split(':'))
-                minutes_until = (dep_h * 60 + dep_m) - (curr_h * 60 + curr_m)
-                next_departure = departure
-                break
-        
-        return {
-            "metro": {
-                "station": schedule_data.get('station', 'METRO'),
-                "next_departure": next_departure,
-                "minutes_until": minutes_until,
-                "line_color": "#D95700"
-            }
-        }
-    except Exception as e:
-        print(f"Error loading fallback: {e}")
-        return None
 
 # ============================================================================
 # Time Calculation Functions
@@ -252,7 +213,7 @@ def create_display_text(data, recalculate_countdown=False):
         # Recalculate based on current time
         minutes = calculate_minutes_until(metro['next_departure'])
     else:
-        # Use the value from data (initial fetch or fallback)
+        # Use the value from data (initial fetch)
         minutes = metro.get('minutes_until', 0)
     
     line1_text = f"METRO: {station.upper()} • {minutes} MIN"
@@ -329,13 +290,9 @@ def main():
     data = fetch_data_from_github()
     
     if not data:
-        print("Failed to fetch from GitHub, trying fallback...")
-        data = load_fallback_schedule()
-        
-        if not data:
-            show_status("NO DATA", COLOR_RED)
-            print("No data available!")
-            return
+        show_status("NO DATA", COLOR_RED)
+        print("Failed to fetch data from GitHub!")
+        return
     
     # Create scrolling lines
     line1_text, line1_color, line2_text, line2_color, line3_text, line3_color = create_display_text(data)
