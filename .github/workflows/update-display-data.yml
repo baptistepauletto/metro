@@ -49,25 +49,59 @@ jobs:
     
     - name: Commit and push to gh-pages
       run: |
-        # Create gh-pages branch if it doesn't exist
-        git fetch origin gh-pages || git checkout --orphan gh-pages
-        git checkout gh-pages || git checkout --orphan gh-pages
-        
-        # Copy the generated data.json to root
-        if [ -f data.json ]; then
-          git add data.json
-          
-          # Only commit if there are changes
-          if ! git diff --staged --quiet; then
-            git commit -m "Update display data - $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
-            git push https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git gh-pages
-            echo "Data updated successfully"
-          else
-            echo "No changes to commit"
-          fi
-        else
+        # Check if data.json was generated
+        if [ ! -f data.json ]; then
           echo "Error: data.json not generated"
           exit 1
+        fi
+        
+        # Save data.json temporarily
+        cp data.json /tmp/data.json
+        
+        # Try to checkout existing gh-pages branch, or create new orphan branch
+        if git ls-remote --exit-code --heads origin gh-pages; then
+          echo "gh-pages branch exists remotely, fetching..."
+          git fetch origin gh-pages
+          git checkout gh-pages
+          git pull origin gh-pages
+          
+          # Clean up - remove everything except data.json
+          git rm -rf .
+          git clean -fdx
+        else
+          echo "Creating new gh-pages branch..."
+          git checkout --orphan gh-pages
+          # Remove all files
+          git rm -rf .
+          git clean -fdx
+        fi
+        
+        # Restore data.json
+        cp /tmp/data.json data.json
+        
+        # Create a README for gh-pages
+        cat > README.md << 'EOF'
+# Matrix Portal Data Feed
+
+This branch contains the data.json file that is served via GitHub Pages for the Matrix Portal display.
+
+**Do not commit other files to this branch.**
+
+The file is automatically updated every 5 minutes by GitHub Actions.
+
+View the data: https://baptistepauletto.github.io/metro/data.json
+EOF
+        
+        # Add files to gh-pages
+        git add -f data.json README.md
+        
+        # Only commit if there are changes
+        if ! git diff --staged --quiet; then
+          git commit -m "Update display data - $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+          git push https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git gh-pages
+          echo "Data updated successfully"
+        else
+          echo "No changes to commit"
         fi
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
