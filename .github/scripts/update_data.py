@@ -9,6 +9,7 @@ import json
 import requests
 from datetime import datetime
 import pytz
+import time
 from pathlib import Path
 
 # Load configuration
@@ -21,17 +22,24 @@ def load_config():
     with open(CONFIG_FILE, 'r') as f:
         return json.load(f)
 
-def fetch_stock_price(symbol):
+def fetch_stock_price(symbol, max_retries=3):
     """
     Fetch stock price from Yahoo Finance API.
     Returns dict with price, change, and change_percent, or None on error.
+    Includes retry logic for rate limiting.
     """
-    try:
-        url = f"https://query1.finance.yahoo.com/v8/finance/chart/{symbol}?range=1d&interval=1d"
-        print(f"Fetching stock data for {symbol}...")
-        
-        response = requests.get(url, timeout=10)
-        response.raise_for_status()
+    for attempt in range(max_retries):
+        try:
+            url = f"https://query1.finance.yahoo.com/v8/finance/chart/{symbol}?range=1d&interval=1d"
+            print(f"Fetching stock data for {symbol}... (attempt {attempt + 1}/{max_retries})")
+            
+            # Add headers to avoid rate limiting
+            headers = {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+            }
+            
+            response = requests.get(url, headers=headers, timeout=10)
+            response.raise_for_status()
         
         data = response.json()
         
@@ -88,12 +96,25 @@ def fetch_stock_price(symbol):
             "market_open": market_open
         }
         
-        print(f"Stock data: {result}")
-        return result
-        
-    except Exception as e:
-        print(f"Error fetching stock data: {e}")
-        return None
+            print(f"Stock data: {result}")
+            return result
+            
+        except requests.exceptions.HTTPError as e:
+            if e.response.status_code == 429:  # Rate limited
+                wait_time = (attempt + 1) * 2  # Exponential backoff: 2s, 4s, 6s
+                print(f"Rate limited. Waiting {wait_time} seconds before retry...")
+                if attempt < max_retries - 1:  # Don't wait on last attempt
+                    time.sleep(wait_time)
+                continue
+            else:
+                print(f"HTTP Error fetching stock data: {e}")
+                return None
+        except Exception as e:
+            print(f"Error fetching stock data: {e}")
+            return None
+    
+    print(f"Failed to fetch stock data after {max_retries} attempts")
+    return None
 
 def get_next_metro(config):
     """
@@ -196,6 +217,16 @@ def get_current_time(timezone):
         print(f"Error getting time: {e}")
         return None
 
+def load_cached_data():
+    """Load cached data from previous data.json if it exists."""
+    try:
+        if OUTPUT_FILE.exists():
+            with open(OUTPUT_FILE, 'r') as f:
+                return json.load(f)
+    except Exception as e:
+        print(f"Could not load cached data: {e}")
+    return None
+
 def generate_data_json():
     """Main function to generate the data.json file."""
     print("=" * 60)
@@ -206,10 +237,18 @@ def generate_data_json():
     config = load_config()
     print(f"Config loaded: {config['stock_symbol']}, {config['metro_station']}")
     
+    # Try to load cached data for fallback
+    cached_data = load_cached_data()
+    
     # Fetch all data
     stock_data = fetch_stock_price(config['stock_symbol'])
     metro_data = get_next_metro(config)
     time_data = get_current_time(config['timezone'])
+    
+    # Use cached stock data if fetch fails
+    if not stock_data and cached_data and 'stock' in cached_data:
+        print("Using cached stock data")
+        stock_data = cached_data['stock']
     
     # Build output JSON
     output = {
