@@ -55,29 +55,29 @@ jobs:
           exit 1
         fi
         
-        # Save data.json temporarily
-        cp data.json /tmp/data.json
+        # Backup data.json (it's untracked due to .gitignore)
+        cp data.json /tmp/matrix-data.json
         
         # Try to checkout existing gh-pages branch, or create new orphan branch
         if git ls-remote --exit-code --heads origin gh-pages; then
           echo "gh-pages branch exists remotely, fetching..."
           git fetch origin gh-pages
-          git checkout gh-pages
+          git checkout -f gh-pages
           git pull origin gh-pages
           
-          # Clean up - remove everything except data.json
-          git rm -rf .
+          # Clean up - remove all files
+          git rm -rf . 2>/dev/null || true
           git clean -fdx
         else
           echo "Creating new gh-pages branch..."
           git checkout --orphan gh-pages
           # Remove all files
-          git rm -rf .
+          git rm -rf . 2>/dev/null || true
           git clean -fdx
         fi
         
-        # Restore data.json
-        cp /tmp/data.json data.json
+        # Restore data.json from backup
+        cp /tmp/matrix-data.json data.json
         
         # Add files to gh-pages
         git add -f data.json README.md
