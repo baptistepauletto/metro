@@ -40,62 +40,62 @@ def fetch_stock_price(symbol, max_retries=3):
             
             response = requests.get(url, headers=headers, timeout=10)
             response.raise_for_status()
-        
-        data = response.json()
-        
-        # Parse Yahoo Finance response
-        chart = data.get("chart", {})
-        result_list = chart.get("result", [])
-        
-        if not result_list:
-            print("Error: No result in Yahoo Finance response")
-            return None
-        
-        meta = result_list[0].get("meta", {})
-        
-        # Extract price data
-        current_price = (
-            meta.get("regularMarketPrice") or
-            meta.get("previousClose") or
-            meta.get("chartPreviousClose")
-        )
-        
-        previous_close = (
-            meta.get("previousClose") or
-            meta.get("chartPreviousClose")
-        )
-        
-        # Fallback to historical data if needed
-        if current_price is None:
-            indicators = result_list[0].get("indicators", {})
-            quote = indicators.get("quote", [{}])[0]
-            close_prices = quote.get("close", [])
             
-            if close_prices:
-                for price in reversed(close_prices):
-                    if price is not None:
-                        current_price = price
-                        break
-        
-        if current_price is None or previous_close is None:
-            print("Error: Missing price data")
-            return None
-        
-        # Calculate change
-        change = current_price - previous_close
-        change_percent = (change / previous_close) * 100
-        
-        # Check if market is open (based on meta data)
-        market_state = meta.get("marketState", "CLOSED")
-        market_open = market_state == "REGULAR"
-        
-        result = {
-            "symbol": symbol.replace(".TO", ""),  # Remove .TO suffix
-            "price": round(current_price, 2),
-            "change_percent": round(change_percent, 2),
-            "market_open": market_open
-        }
-        
+            data = response.json()
+            
+            # Parse Yahoo Finance response
+            chart = data.get("chart", {})
+            result_list = chart.get("result", [])
+            
+            if not result_list:
+                print("Error: No result in Yahoo Finance response")
+                return None
+            
+            meta = result_list[0].get("meta", {})
+            
+            # Extract price data
+            current_price = (
+                meta.get("regularMarketPrice") or
+                meta.get("previousClose") or
+                meta.get("chartPreviousClose")
+            )
+            
+            previous_close = (
+                meta.get("previousClose") or
+                meta.get("chartPreviousClose")
+            )
+            
+            # Fallback to historical data if needed
+            if current_price is None:
+                indicators = result_list[0].get("indicators", {})
+                quote = indicators.get("quote", [{}])[0]
+                close_prices = quote.get("close", [])
+                
+                if close_prices:
+                    for price in reversed(close_prices):
+                        if price is not None:
+                            current_price = price
+                            break
+            
+            if current_price is None or previous_close is None:
+                print("Error: Missing price data")
+                return None
+            
+            # Calculate change
+            change = current_price - previous_close
+            change_percent = (change / previous_close) * 100
+            
+            # Check if market is open (based on meta data)
+            market_state = meta.get("marketState", "CLOSED")
+            market_open = market_state == "REGULAR"
+            
+            result = {
+                "symbol": symbol.replace(".TO", ""),  # Remove .TO suffix
+                "price": round(current_price, 2),
+                "change_percent": round(change_percent, 2),
+                "market_open": market_open
+            }
+            
             print(f"Stock data: {result}")
             return result
             
