@@ -275,10 +275,20 @@ def create_display_text(data, recalculate_countdown=False):
         line2_text = f"STOCK: {symbol} ${price:.2f} {change_pct:.1f}% • {status}"
         line2_color = COLOR_RED
     
-    # Line 3: Time
-    time_data = data.get('time', {})
-    time_str = time_data.get('display', '00:00')
-    date_str = time_data.get('date', 'N/A')
+    # Line 3: Time (calculate locally for real-time updates)
+    if recalculate_countdown:
+        # Get current local time for real-time display
+        current = time.localtime()
+        time_str = f"{current.tm_hour:02d}:{current.tm_min:02d}"
+        # Format date
+        months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC']
+        date_str = f"{months[current.tm_mon - 1]} {current.tm_mday}"
+    else:
+        # Use the value from GitHub (initial fetch)
+        time_data = data.get('time', {})
+        time_str = time_data.get('display', '00:00')
+        date_str = time_data.get('date', 'N/A')
+    
     line3_text = f"TIME: {time_str} • {date_str}"
     line3_color = COLOR_YELLOW
     
@@ -335,8 +345,8 @@ def main():
         print("Failed to fetch data from GitHub!")
         return
     
-    # Create scrolling lines
-    line1_text, line1_color, line2_text, line2_color, line3_text, line3_color = create_display_text(data)
+    # Create scrolling lines (use recalculate=True to show multiple departures from start)
+    line1_text, line1_color, line2_text, line2_color, line3_text, line3_color = create_display_text(data, recalculate_countdown=True)
     
     line1 = ScrollingLine(line1_text, 5, line1_color)   # Top line
     line2 = ScrollingLine(line2_text, 16, line2_color)  # Middle line
@@ -376,8 +386,8 @@ def main():
                     data = new_data
                     print("Data updated successfully!")
                     
-                    # Update text content
-                    line1_text, line1_color, line2_text, line2_color, line3_text, line3_color = create_display_text(data)
+                    # Update text content (recalculate for accurate real-time display)
+                    line1_text, line1_color, line2_text, line2_color, line3_text, line3_color = create_display_text(data, recalculate_countdown=True)
                     line1.update_text(line1_text, line1_color)
                     line2.update_text(line2_text, line2_color)
                     line3.update_text(line3_text, line3_color)
@@ -397,13 +407,15 @@ def main():
             
             # Update countdown periodically (every 30 seconds)
             elif current - last_countdown_update > COUNTDOWN_UPDATE:
-                print("\nUpdating countdown...")
+                print("\nUpdating countdown and time...")
                 
-                # Recalculate metro countdown from departure time
+                # Recalculate metro countdown and time from current clock
                 line1_text, line1_color, line2_text, line2_color, line3_text, line3_color = create_display_text(data, recalculate_countdown=True)
                 line1.update_text(line1_text, line1_color)
+                line3.update_text(line3_text, line3_color)  # Update time too
                 
-                print(f"Countdown updated: {line1_text}")
+                print(f"Metro: {line1_text}")
+                print(f"Time: {line3_text}")
                 
                 last_countdown_update = current
             
