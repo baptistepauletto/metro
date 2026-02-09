@@ -4,7 +4,7 @@
   "metro_line": "2",
   "metro_direction": "Côte-Vertu",
   "timezone": "America/Montreal",
-  "update_interval": 300,
+  "update_interval": 900,
   "github_pages_url": "https://baptistepauletto.github.io/metro/data.json",
   "display": {
     "brightness": 0.3,

@@ -41,7 +41,7 @@ DATA_URL = "https://baptistepauletto.github.io/metro/data.json"
 
 # Display settings
 BRIGHTNESS = 0.3
-UPDATE_INTERVAL = 300  # Fetch new data every 5 minutes (300 seconds)
+UPDATE_INTERVAL = 900   # Fetch new data every 15 minutes (900 seconds)
 COUNTDOWN_UPDATE = 30   # Update countdown every 30 seconds
 SCROLL_SPEED = 0.05     # Seconds between scroll steps (lower = faster)
 SCROLL_STEP = 1         # Pixels to move per step
@@ -266,14 +266,18 @@ def create_display_text(data, recalculate_countdown=False):
     price = stock.get('price', 0.0)
     change_pct = stock.get('change_percent', 0.0)
     market_open = stock.get('market_open', False)
-    status = "OPEN" if market_open else "CLOSED"
     
+    # Build stock text - color based on change
     if change_pct >= 0:
-        line2_text = f"STOCK: {symbol} ${price:.2f} +{change_pct:.1f}% • {status}"
+        line2_text = f"STOCK: {symbol} ${price:.2f} +{change_pct:.1f}%"
         line2_color = COLOR_GREEN
     else:
-        line2_text = f"STOCK: {symbol} ${price:.2f} {change_pct:.1f}% • {status}"
+        line2_text = f"STOCK: {symbol} ${price:.2f} {change_pct:.1f}%"
         line2_color = COLOR_RED
+    
+    # Add market status with brackets for visual distinction
+    status = "[OPEN]" if market_open else "[CLOSED]"
+    line2_text += f" {status}"
     
     # Line 3: Time (calculate locally for real-time updates)
     if recalculate_countdown:

@@ -145,21 +145,21 @@ def get_next_metro(config):
             print(f"No schedule for {current_day}")
             return None
         
-        # Find next 3 departures
+        # Find next 5 departures (since GitHub Actions runs every 15 min)
         next_departures = []
         for departure_time in today_schedule:
             if departure_time > current_time_str:
                 next_departures.append(departure_time)
-                if len(next_departures) >= 3:
+                if len(next_departures) >= 5:
                     break
         
         # If not enough departures today, add from tomorrow
-        if len(next_departures) < 3:
+        if len(next_departures) < 5:
             tomorrow_idx = (now.weekday() + 1) % 7
             tomorrow_day = days[tomorrow_idx]
             tomorrow_schedule = schedule.get(tomorrow_day, [])
-            # Add as many as needed to get to 3 total
-            needed = 3 - len(next_departures)
+            # Add as many as needed to get to 5 total
+            needed = 5 - len(next_departures)
             next_departures.extend(tomorrow_schedule[:needed])
         
         if not next_departures:
@@ -187,7 +187,7 @@ def get_next_metro(config):
         
         result = {
             "station": config['metro_station'],
-            "next_departures": next_departures,  # Array of next 3 times
+            "next_departures": next_departures,  # Array of next 5 times
             "next_departure": next_departures[0],  # Keep for backward compatibility
             "minutes_until": minutes_until,
             "line_color": line_color
