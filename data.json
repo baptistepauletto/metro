@@ -1,26 +1,26 @@
 {
-  "updated": "2026-02-09T14:39:31.137836-05:00Z",
+  "updated": "2026-02-09T15:20:17.143174-05:00Z",
   "metro": {
     "station": "Rosemont",
     "next_departures": [
-      "14:43",
-      "14:49",
-      "14:55",
-      "15:01",
-      "15:07"
+      "15:22",
+      "15:27",
+      "15:32",
+      "15:37",
+      "15:41"
     ],
-    "next_departure": "14:43",
-    "minutes_until": 4,
+    "next_departure": "15:22",
+    "minutes_until": 2,
     "line_color": "#D95700"
   },
   "stock": {
     "symbol": "XEQT",
-    "price": 41.41,
-    "change_percent": 0.62,
+    "price": 41.42,
+    "change_percent": 0.63,
     "market_open": false
   },
   "time": {
-    "display": "14:39",
+    "display": "15:20",
     "timezone": "America/Montreal",
     "date": "FEB 09"
   }
