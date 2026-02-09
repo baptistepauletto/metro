@@ -145,33 +145,36 @@ def get_next_metro(config):
             print(f"No schedule for {current_day}")
             return None
         
-        # Find next departure
-        next_departure = None
+        # Find next 3 departures
+        next_departures = []
         for departure_time in today_schedule:
             if departure_time > current_time_str:
-                next_departure = departure_time
-                break
+                next_departures.append(departure_time)
+                if len(next_departures) >= 3:
+                    break
         
-        # If no more departures today, get first one tomorrow
-        if next_departure is None:
+        # If not enough departures today, add from tomorrow
+        if len(next_departures) < 3:
             tomorrow_idx = (now.weekday() + 1) % 7
             tomorrow_day = days[tomorrow_idx]
             tomorrow_schedule = schedule.get(tomorrow_day, [])
-            if tomorrow_schedule:
-                next_departure = tomorrow_schedule[0]
-                # Calculate minutes until midnight + time
-                current_minutes = now.hour * 60 + now.minute
-                minutes_until_midnight = 24 * 60 - current_minutes
-                departure_hour, departure_minute = map(int, next_departure.split(':'))
-                minutes_until = minutes_until_midnight + departure_hour * 60 + departure_minute
-            else:
-                return None
-        else:
-            # Calculate minutes until departure
-            departure_hour, departure_minute = map(int, next_departure.split(':'))
-            departure_total_minutes = departure_hour * 60 + departure_minute
-            current_total_minutes = now.hour * 60 + now.minute
-            minutes_until = departure_total_minutes - current_total_minutes
+            # Add as many as needed to get to 3 total
+            needed = 3 - len(next_departures)
+            next_departures.extend(tomorrow_schedule[:needed])
+        
+        if not next_departures:
+            return None
+        
+        # Calculate minutes until first departure
+        first_departure = next_departures[0]
+        departure_hour, departure_minute = map(int, first_departure.split(':'))
+        departure_total_minutes = departure_hour * 60 + departure_minute
+        current_total_minutes = now.hour * 60 + now.minute
+        minutes_until = departure_total_minutes - current_total_minutes
+        
+        # Handle next-day departures
+        if minutes_until < 0:
+            minutes_until += 24 * 60
         
         # Get line color from config
         line_colors = {
@@ -184,7 +187,8 @@ def get_next_metro(config):
         
         result = {
             "station": config['metro_station'],
-            "next_departure": next_departure,
+            "next_departures": next_departures,  # Array of next 3 times
+            "next_departure": next_departures[0],  # Keep for backward compatibility
             "minutes_until": minutes_until,
             "line_color": line_color
         }
@@ -255,6 +259,7 @@ def generate_data_json():
         "updated": datetime.now(pytz.timezone("America/Montreal")).isoformat() + "Z",
         "metro": metro_data if metro_data else {
             "station": config['metro_station'],
+            "next_departures": [],
             "next_departure": "N/A",
             "minutes_until": 0,
             "line_color": "#D95700"

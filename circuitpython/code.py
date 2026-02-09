@@ -114,7 +114,7 @@ def calculate_minutes_until(departure_time_str):
     """
     Calculate minutes until a given departure time (HH:MM format).
     Uses current local time from the Matrix Portal's clock.
-    Returns minutes until departure, or 0 if time has passed.
+    Returns minutes until departure, or None if time has passed.
     """
     try:
         # Parse departure time
@@ -128,14 +128,30 @@ def calculate_minutes_until(departure_time_str):
         # Calculate difference
         minutes_until = dep_total_minutes - curr_total_minutes
         
-        # Handle next-day departures (departure is past midnight)
+        # Return None if departure has passed (caller will try next departure)
         if minutes_until < 0:
-            minutes_until += 24 * 60  # Add 24 hours
+            return None
         
-        return max(0, minutes_until)
+        return minutes_until
     except Exception as e:
         print(f"Error calculating minutes: {e}")
-        return 0
+        return None
+
+def get_all_valid_departures(departures_list):
+    """
+    From a list of departure times, calculate minutes until each one that hasn't passed.
+    Returns list of minutes (e.g., [5, 12, 18]) or empty list if all have passed.
+    """
+    if not departures_list:
+        return []
+    
+    valid_minutes = []
+    for departure in departures_list:
+        minutes = calculate_minutes_until(departure)
+        if minutes is not None:  # Not passed yet
+            valid_minutes.append(minutes)
+    
+    return valid_minutes
 
 # ============================================================================
 # Scrolling Text Classes
@@ -201,22 +217,47 @@ class ScrollingLine:
 def create_display_text(data, recalculate_countdown=False):
     """
     Create the text strings for each line from the data.
-    If recalculate_countdown=True, recalculates metro countdown from departure time.
+    If recalculate_countdown=True, recalculates metro countdown from departure times.
     Returns tuple of (line1_text, line1_color, line2_text, line2_color, line3_text, line3_color)
     """
     # Line 1: Metro
     metro = data.get('metro', {})
     station = metro.get('station', 'METRO')
     
-    # Calculate minutes until departure
-    if recalculate_countdown and metro.get('next_departure'):
-        # Recalculate based on current time
-        minutes = calculate_minutes_until(metro['next_departure'])
+    # Calculate minutes until departures
+    if recalculate_countdown:
+        # Use the list of next departures to show multiple countdowns
+        departures = metro.get('next_departures', [])
+        if departures:
+            valid_minutes = get_all_valid_departures(departures)
+            if valid_minutes:
+                # Format multiple departures: "5, 12, 18 MINS"
+                if len(valid_minutes) == 1:
+                    minutes_str = f"{valid_minutes[0]} MINS"
+                else:
+                    # Show up to 3 departures
+                    minutes_display = ", ".join(str(m) for m in valid_minutes[:3])
+                    minutes_str = f"{minutes_display} MINS"
+            else:
+                # All departures passed
+                minutes_str = "UPDATING"
+        else:
+            # Fallback to single departure
+            departure_time = metro.get('next_departure')
+            if departure_time:
+                minutes = calculate_minutes_until(departure_time)
+                if minutes is not None:
+                    minutes_str = f"{minutes} MINS"
+                else:
+                    minutes_str = "UPDATING"
+            else:
+                minutes_str = "N/A"
     else:
         # Use the value from data (initial fetch)
         minutes = metro.get('minutes_until', 0)
+        minutes_str = f"{minutes} MINS"
     
-    line1_text = f"METRO: {station.upper()} • {minutes} MIN"
+    line1_text = f"METRO: {station.upper()} • {minutes_str}"
     line1_color = COLOR_ORANGE
     
     # Line 2: Stock
