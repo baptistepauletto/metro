@@ -85,9 +85,27 @@ def fetch_stock_price(symbol, max_retries=3):
             change = current_price - previous_close
             change_percent = (change / previous_close) * 100
             
-            # Check if market is open (based on meta data)
-            market_state = meta.get("marketState", "CLOSED")
-            market_open = market_state == "REGULAR"
+            # Check if market is open by comparing current time with trading period
+            market_open = False
+            try:
+                current_trading_period = meta.get("currentTradingPeriod", {})
+                regular_period = current_trading_period.get("regular", {})
+                
+                if regular_period:
+                    # Get current timestamp
+                    current_timestamp = int(time.time())
+                    
+                    # Get trading period start and end times
+                    market_start = regular_period.get("start")
+                    market_end = regular_period.get("end")
+                    
+                    # Check if current time is within regular trading hours
+                    if market_start and market_end:
+                        market_open = market_start <= current_timestamp < market_end
+                        print(f"Market hours check: start={market_start}, end={market_end}, current={current_timestamp}, open={market_open}")
+            except Exception as e:
+                print(f"Error checking market hours: {e}")
+                # Default to closed if we can't determine
             
             result = {
                 "symbol": symbol.replace(".TO", ""),  # Remove .TO suffix
