@@ -1,10 +1,8 @@
 {
-  "updated": "2026-02-14T17:46:31.614807-05:00Z",
+  "updated": "2026-02-14T18:00:06.324087-05:00Z",
   "metro": {
     "station": "Rosemont",
     "next_departures": [
-      "17:51",
-      "17:57",
       "18:03",
       "18:10",
       "18:16",
@@ -32,10 +30,12 @@
       "20:56",
       "21:04",
       "21:12",
-      "21:20"
+      "21:20",
+      "21:28",
+      "21:37"
     ],
-    "next_departure": "17:51",
-    "minutes_until": 5,
+    "next_departure": "18:03",
+    "minutes_until": 3,
     "line_color": "#D95700"
   },
   "stock": {
@@ -45,7 +45,7 @@
     "market_open": false
   },
   "time": {
-    "display": "17:46",
+    "display": "18:00",
     "timezone": "America/Montreal",
     "date": "FEB 14"
   }
