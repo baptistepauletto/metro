@@ -1,5 +1,5 @@
 {
-  "updated": "2026-02-20T17:36:16.438919-05:00Z",
+  "updated": "2026-02-20T17:36:35.541420-05:00Z",
   "metro": {
     "station": "Rosemont",
     "next_departures": [
@@ -47,8 +47,8 @@
     },
     {
       "symbol": "BTC",
-      "price": 68011.08,
-      "change_percent": 1.57,
+      "price": 68017.3,
+      "change_percent": 1.58,
       "color": "orange"
     },
     {
