@@ -22,16 +22,20 @@ def load_config():
     with open(CONFIG_FILE, 'r') as f:
         return json.load(f)
 
-def fetch_stock_price(symbol, max_retries=3):
+def fetch_asset_price(symbol, display_name, max_retries=3):
     """
-    Fetch stock price from Yahoo Finance API.
-    Returns dict with price, change, and change_percent, or None on error.
+    Fetch asset price from Yahoo Finance API.
+    Returns dict with symbol, price, change_percent, or None on error.
     Includes retry logic for rate limiting.
+    
+    Args:
+        symbol: Yahoo Finance symbol (e.g., "XEQT.TO", "BTC-USD", "GC=F", "^GSPC")
+        display_name: Short display name (e.g., "XEQT", "BTC", "GOLD", "SPX")
     """
     for attempt in range(max_retries):
         try:
             url = f"https://query1.finance.yahoo.com/v8/finance/chart/{symbol}?range=1d&interval=1d"
-            print(f"Fetching stock data for {symbol}... (attempt {attempt + 1}/{max_retries})")
+            print(f"Fetching {display_name} ({symbol})... (attempt {attempt + 1}/{max_retries})")
             
             # Add headers to avoid rate limiting
             headers = {
@@ -48,7 +52,7 @@ def fetch_stock_price(symbol, max_retries=3):
             result_list = chart.get("result", [])
             
             if not result_list:
-                print("Error: No result in Yahoo Finance response")
+                print(f"Error: No result in Yahoo Finance response for {display_name}")
                 return None
             
             meta = result_list[0].get("meta", {})
@@ -78,43 +82,20 @@ def fetch_stock_price(symbol, max_retries=3):
                             break
             
             if current_price is None or previous_close is None:
-                print("Error: Missing price data")
+                print(f"Error: Missing price data for {display_name}")
                 return None
             
             # Calculate change
             change = current_price - previous_close
             change_percent = (change / previous_close) * 100
             
-            # Check if market is open by comparing current time with trading period
-            market_open = False
-            try:
-                current_trading_period = meta.get("currentTradingPeriod", {})
-                regular_period = current_trading_period.get("regular", {})
-                
-                if regular_period:
-                    # Get current timestamp
-                    current_timestamp = int(time.time())
-                    
-                    # Get trading period start and end times
-                    market_start = regular_period.get("start")
-                    market_end = regular_period.get("end")
-                    
-                    # Check if current time is within regular trading hours
-                    if market_start and market_end:
-                        market_open = market_start <= current_timestamp < market_end
-                        print(f"Market hours check: start={market_start}, end={market_end}, current={current_timestamp}, open={market_open}")
-            except Exception as e:
-                print(f"Error checking market hours: {e}")
-                # Default to closed if we can't determine
-            
             result = {
-                "symbol": symbol.replace(".TO", ""),  # Remove .TO suffix
+                "symbol": display_name,
                 "price": round(current_price, 2),
-                "change_percent": round(change_percent, 2),
-                "market_open": market_open
+                "change_percent": round(change_percent, 2)
             }
             
-            print(f"Stock data: {result}")
+            print(f"{display_name} data: ${result['price']} ({result['change_percent']:+.2f}%)")
             return result
             
         except requests.exceptions.HTTPError as e:
@@ -125,14 +106,48 @@ def fetch_stock_price(symbol, max_retries=3):
                     time.sleep(wait_time)
                 continue
             else:
-                print(f"HTTP Error fetching stock data: {e}")
+                print(f"HTTP Error fetching {display_name}: {e}")
                 return None
         except Exception as e:
-            print(f"Error fetching stock data: {e}")
+            print(f"Error fetching {display_name}: {e}")
             return None
     
-    print(f"Failed to fetch stock data after {max_retries} attempts")
+    print(f"Failed to fetch {display_name} after {max_retries} attempts")
     return None
+
+
+def check_market_open(symbol="XEQT.TO"):
+    """
+    Check if the market is currently open for a given symbol.
+    Returns True if open, False otherwise.
+    """
+    try:
+        url = f"https://query1.finance.yahoo.com/v8/finance/chart/{symbol}?range=1d&interval=1d"
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+        }
+        
+        response = requests.get(url, headers=headers, timeout=10)
+        response.raise_for_status()
+        data = response.json()
+        
+        meta = data.get("chart", {}).get("result", [{}])[0].get("meta", {})
+        current_trading_period = meta.get("currentTradingPeriod", {})
+        regular_period = current_trading_period.get("regular", {})
+        
+        if regular_period:
+            current_timestamp = int(time.time())
+            market_start = regular_period.get("start")
+            market_end = regular_period.get("end")
+            
+            if market_start and market_end:
+                market_open = market_start <= current_timestamp < market_end
+                print(f"Market open: {market_open}")
+                return market_open
+    except Exception as e:
+        print(f"Error checking market hours: {e}")
+    
+    return False
 
 def get_next_metro(config):
     """
@@ -262,15 +277,53 @@ def generate_data_json():
     # Try to load cached data for fallback
     cached_data = load_cached_data()
     
-    # Fetch all data
-    stock_data = fetch_stock_price(config['stock_symbol'])
+    # Define all assets to fetch
+    assets_config = [
+        {"symbol": config['stock_symbol'], "display_name": "XEQT", "color": "blue"},
+        {"symbol": "BTC-USD", "display_name": "BTC", "color": "orange"},
+        {"symbol": "GC=F", "display_name": "GOLD", "color": "yellow"},
+        {"symbol": "^GSPC", "display_name": "SPX", "color": "purple"}
+    ]
+    
+    # Fetch all assets
+    print("\nFetching all assets...")
+    assets_data = []
+    for asset_config in assets_config:
+        asset_data = fetch_asset_price(asset_config["symbol"], asset_config["display_name"])
+        if asset_data:
+            asset_data["color"] = asset_config["color"]
+            assets_data.append(asset_data)
+        else:
+            # Use cached data if available
+            if cached_data and 'assets' in cached_data:
+                for cached_asset in cached_data['assets']:
+                    if cached_asset['symbol'] == asset_config["display_name"]:
+                        print(f"Using cached data for {asset_config['display_name']}")
+                        assets_data.append(cached_asset)
+                        break
+                else:
+                    # No cached data, use placeholder
+                    assets_data.append({
+                        "symbol": asset_config["display_name"],
+                        "price": 0.0,
+                        "change_percent": 0.0,
+                        "color": asset_config["color"]
+                    })
+            else:
+                # No cached data available
+                assets_data.append({
+                    "symbol": asset_config["display_name"],
+                    "price": 0.0,
+                    "change_percent": 0.0,
+                    "color": asset_config["color"]
+                })
+    
+    # Check market status (using XEQT as reference)
+    market_open = check_market_open(config['stock_symbol'])
+    
+    # Fetch metro and time data
     metro_data = get_next_metro(config)
     time_data = get_current_time(config['timezone'])
-    
-    # Use cached stock data if fetch fails
-    if not stock_data and cached_data and 'stock' in cached_data:
-        print("Using cached stock data")
-        stock_data = cached_data['stock']
     
     # Build output JSON
     output = {
@@ -282,11 +335,14 @@ def generate_data_json():
             "minutes_until": 0,
             "line_color": "#D95700"
         },
-        "stock": stock_data if stock_data else {
-            "symbol": config['stock_symbol'].replace(".TO", ""),
-            "price": 0.0,
-            "change_percent": 0.0,
-            "market_open": False
+        "assets": assets_data,
+        "market_open": market_open,
+        # Keep legacy "stock" field for backward compatibility
+        "stock": {
+            "symbol": assets_data[0]["symbol"] if assets_data else "XEQT",
+            "price": assets_data[0]["price"] if assets_data else 0.0,
+            "change_percent": assets_data[0]["change_percent"] if assets_data else 0.0,
+            "market_open": market_open
         },
         "time": time_data if time_data else {
             "display": "00:00",
@@ -300,12 +356,14 @@ def generate_data_json():
     with open(OUTPUT_FILE, 'w') as f:
         json.dump(output, f, indent=2)
     
-    print("✓ Data file generated successfully!")
+    print("[OK] Data file generated successfully!")
     print("=" * 60)
     
     # Print summary
     print("\nData Summary:")
-    print(f"  Stock:  {output['stock']['symbol']} ${output['stock']['price']} ({output['stock']['change_percent']:+.1f}%)")
+    for asset in assets_data:
+        print(f"  {asset['symbol']:6} ${asset['price']:>8.2f} ({asset['change_percent']:+.1f}%)")
+    print(f"  Market: {'OPEN' if market_open else 'CLOSED'}")
     print(f"  Metro:  {output['metro']['station']} in {output['metro']['minutes_until']} min")
     print(f"  Time:   {output['time']['display']} {output['time']['date']}")
     print()
