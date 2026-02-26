@@ -1,25 +1,8 @@
 {
-  "updated": "2026-02-26T11:30:21.050767-05:00Z",
+  "updated": "2026-02-26T12:36:38.985940-05:00Z",
   "metro": {
     "station": "Rosemont",
     "next_departures": [
-      "11:31",
-      "11:37",
-      "11:40",
-      "11:43",
-      "11:49",
-      "11:50",
-      "11:55",
-      "12:00",
-      "12:01",
-      "12:07",
-      "12:10",
-      "12:13",
-      "12:19",
-      "12:20",
-      "12:25",
-      "12:30",
-      "12:31",
       "12:37",
       "12:40",
       "12:43",
@@ -32,47 +15,64 @@
       "13:10",
       "13:13",
       "13:19",
-      "13:20"
+      "13:20",
+      "13:25",
+      "13:30",
+      "13:31",
+      "13:37",
+      "13:40",
+      "13:43",
+      "13:49",
+      "13:50",
+      "13:55",
+      "14:00",
+      "14:01",
+      "14:07",
+      "14:10",
+      "14:13",
+      "14:19",
+      "14:20",
+      "14:25"
     ],
-    "next_departure": "11:31",
+    "next_departure": "12:37",
     "minutes_until": 1,
     "line_color": "#D95700"
   },
   "assets": [
     {
       "symbol": "XEQT",
-      "price": 42.2,
-      "change_percent": -0.17,
+      "price": 42.12,
+      "change_percent": -0.35,
       "color": "blue"
     },
     {
       "symbol": "BTC",
-      "price": 67467.67,
-      "change_percent": -0.76,
+      "price": 66971.04,
+      "change_percent": -1.49,
       "color": "orange"
     },
     {
       "symbol": "GOLD",
-      "price": 5197.9,
-      "change_percent": -0.54,
+      "price": 5195.3,
+      "change_percent": -0.59,
       "color": "yellow"
     },
     {
       "symbol": "SPX",
-      "price": 6902.03,
-      "change_percent": -0.63,
+      "price": 6878.59,
+      "change_percent": -0.97,
       "color": "purple"
     }
   ],
   "market_open": true,
   "stock": {
     "symbol": "XEQT",
-    "price": 42.2,
-    "change_percent": -0.17,
+    "price": 42.12,
+    "change_percent": -0.35,
     "market_open": true
   },
   "time": {
-    "display": "11:30",
+    "display": "12:36",
     "timezone": "America/Montreal",
     "date": "FEB 26"
   }
