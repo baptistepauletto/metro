@@ -1,28 +1,8 @@
 {
-  "updated": "2026-02-27T08:59:28.724656-05:00Z",
+  "updated": "2026-02-27T09:39:32.228493-05:00Z",
   "metro": {
     "station": "Rosemont",
     "next_departures": [
-      "09:00",
-      "09:04",
-      "09:05",
-      "09:07",
-      "09:10",
-      "09:12",
-      "09:13",
-      "09:14",
-      "09:17",
-      "09:20",
-      "09:21",
-      "09:22",
-      "09:24",
-      "09:28",
-      "09:29",
-      "09:30",
-      "09:32",
-      "09:35",
-      "09:37",
-      "09:39",
       "09:43",
       "09:45",
       "09:47",
@@ -32,47 +12,67 @@
       "09:58",
       "10:01",
       "10:03",
-      "10:05"
+      "10:05",
+      "10:08",
+      "10:09",
+      "10:13",
+      "10:16",
+      "10:19",
+      "10:22",
+      "10:24",
+      "10:25",
+      "10:30",
+      "10:31",
+      "10:32",
+      "10:37",
+      "10:39",
+      "10:40",
+      "10:43",
+      "10:47",
+      "10:48",
+      "10:49",
+      "10:55",
+      "10:56"
     ],
-    "next_departure": "09:00",
-    "minutes_until": 1,
+    "next_departure": "09:43",
+    "minutes_until": 4,
     "line_color": "#D95700"
   },
   "assets": [
     {
       "symbol": "XEQT",
-      "price": 42.3,
-      "change_percent": 0.07,
+      "price": 42.05,
+      "change_percent": -0.59,
       "color": "blue"
     },
     {
       "symbol": "BTC",
-      "price": 66222.73,
-      "change_percent": -1.86,
+      "price": 66202.73,
+      "change_percent": -1.89,
       "color": "orange"
     },
     {
       "symbol": "GOLD",
-      "price": 5229.6,
-      "change_percent": 0.68,
+      "price": 5248.8,
+      "change_percent": 1.05,
       "color": "yellow"
     },
     {
       "symbol": "SPX",
-      "price": 6908.86,
-      "change_percent": -0.54,
+      "price": 6852.03,
+      "change_percent": -0.82,
       "color": "purple"
     }
   ],
-  "market_open": false,
+  "market_open": true,
   "stock": {
     "symbol": "XEQT",
-    "price": 42.3,
-    "change_percent": 0.07,
-    "market_open": false
+    "price": 42.05,
+    "change_percent": -0.59,
+    "market_open": true
   },
   "time": {
-    "display": "08:59",
+    "display": "09:39",
     "timezone": "America/Montreal",
     "date": "FEB 27"
   }
