@@ -1,27 +1,8 @@
 {
-  "updated": "2026-03-06T09:01:19.758402-05:00Z",
+  "updated": "2026-03-06T09:42:41.943743-05:00Z",
   "metro": {
     "station": "Rosemont",
     "next_departures": [
-      "09:04",
-      "09:05",
-      "09:07",
-      "09:10",
-      "09:12",
-      "09:13",
-      "09:14",
-      "09:17",
-      "09:20",
-      "09:21",
-      "09:22",
-      "09:24",
-      "09:28",
-      "09:29",
-      "09:30",
-      "09:32",
-      "09:35",
-      "09:37",
-      "09:39",
       "09:43",
       "09:45",
       "09:47",
@@ -32,47 +13,66 @@
       "10:01",
       "10:03",
       "10:05",
-      "10:08"
+      "10:08",
+      "10:09",
+      "10:13",
+      "10:16",
+      "10:19",
+      "10:22",
+      "10:24",
+      "10:25",
+      "10:30",
+      "10:31",
+      "10:32",
+      "10:37",
+      "10:39",
+      "10:40",
+      "10:43",
+      "10:47",
+      "10:48",
+      "10:49",
+      "10:55",
+      "10:56"
     ],
-    "next_departure": "09:04",
-    "minutes_until": 3,
+    "next_departure": "09:43",
+    "minutes_until": 1,
     "line_color": "#D95700"
   },
   "assets": [
     {
       "symbol": "XEQT",
-      "price": 40.94,
-      "change_percent": -1.06,
+      "price": 40.27,
+      "change_percent": -1.64,
       "color": "blue"
     },
     {
       "symbol": "BTC",
-      "price": 69358.98,
-      "change_percent": -2.14,
+      "price": 68627.36,
+      "change_percent": -3.18,
       "color": "orange"
     },
     {
       "symbol": "GOLD",
-      "price": 5117.4,
-      "change_percent": 0.76,
+      "price": 5117.0,
+      "change_percent": 0.75,
       "color": "yellow"
     },
     {
       "symbol": "SPX",
-      "price": 6830.71,
-      "change_percent": -0.56,
+      "price": 6725.68,
+      "change_percent": -1.54,
       "color": "purple"
     }
   ],
-  "market_open": false,
+  "market_open": true,
   "stock": {
     "symbol": "XEQT",
-    "price": 40.94,
-    "change_percent": -1.06,
-    "market_open": false
+    "price": 40.27,
+    "change_percent": -1.64,
+    "market_open": true
   },
   "time": {
-    "display": "09:01",
+    "display": "09:42",
     "timezone": "America/Montreal",
     "date": "MAR 06"
   }
