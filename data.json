@@ -1,25 +1,8 @@
 {
-  "updated": "2026-03-06T14:06:14.993597-05:00Z",
+  "updated": "2026-03-06T14:43:06.990465-05:00Z",
   "metro": {
     "station": "Rosemont",
     "next_departures": [
-      "14:07",
-      "14:08",
-      "14:13",
-      "14:15",
-      "14:19",
-      "14:20",
-      "14:21",
-      "14:25",
-      "14:27",
-      "14:28",
-      "14:31",
-      "14:33",
-      "14:35",
-      "14:37",
-      "14:40",
-      "14:42",
-      "14:43",
       "14:46",
       "14:49",
       "14:53",
@@ -32,47 +15,64 @@
       "15:07",
       "15:09",
       "15:12",
-      "15:13"
+      "15:13",
+      "15:16",
+      "15:17",
+      "15:19",
+      "15:22",
+      "15:23",
+      "15:26",
+      "15:27",
+      "15:30",
+      "15:32",
+      "15:37",
+      "15:39",
+      "15:41",
+      "15:43",
+      "15:45",
+      "15:46",
+      "15:48",
+      "15:50"
     ],
-    "next_departure": "14:07",
-    "minutes_until": 1,
+    "next_departure": "14:46",
+    "minutes_until": 3,
     "line_color": "#D95700"
   },
   "assets": [
     {
       "symbol": "XEQT",
-      "price": 40.35,
-      "change_percent": -1.44,
+      "price": 40.4,
+      "change_percent": -1.32,
       "color": "blue"
     },
     {
       "symbol": "BTC",
-      "price": 68282.82,
-      "change_percent": -3.66,
+      "price": 68165.09,
+      "change_percent": -3.83,
       "color": "orange"
     },
     {
       "symbol": "GOLD",
-      "price": 5169.4,
-      "change_percent": 1.79,
+      "price": 5175.3,
+      "change_percent": 1.9,
       "color": "yellow"
     },
     {
       "symbol": "SPX",
-      "price": 6754.95,
-      "change_percent": -1.11,
+      "price": 6766.62,
+      "change_percent": -0.94,
       "color": "purple"
     }
   ],
   "market_open": true,
   "stock": {
     "symbol": "XEQT",
-    "price": 40.35,
-    "change_percent": -1.44,
+    "price": 40.4,
+    "change_percent": -1.32,
     "market_open": true
   },
   "time": {
-    "display": "14:06",
+    "display": "14:43",
     "timezone": "America/Montreal",
     "date": "MAR 06"
   }
