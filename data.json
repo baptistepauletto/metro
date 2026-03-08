@@ -1,10 +1,8 @@
 {
-  "updated": "2026-03-08T16:25:50.831644-04:00Z",
+  "updated": "2026-03-08T16:46:20.999935-04:00Z",
   "metro": {
     "station": "Rosemont",
     "next_departures": [
-      "16:33",
-      "16:40",
       "16:47",
       "16:55",
       "17:02",
@@ -32,10 +30,12 @@
       "19:50",
       "19:58",
       "20:06",
-      "20:15"
+      "20:15",
+      "20:23",
+      "20:32"
     ],
-    "next_departure": "16:33",
-    "minutes_until": 8,
+    "next_departure": "16:47",
+    "minutes_until": 1,
     "line_color": "#D95700"
   },
   "assets": [
@@ -47,8 +47,8 @@
     },
     {
       "symbol": "BTC",
-      "price": 67144.32,
-      "change_percent": -0.16,
+      "price": 67411.52,
+      "change_percent": 0.24,
       "color": "orange"
     },
     {
@@ -72,7 +72,7 @@
     "market_open": false
   },
   "time": {
-    "display": "16:25",
+    "display": "16:46",
     "timezone": "America/Montreal",
     "date": "MAR 08"
   }
