@@ -1,24 +1,8 @@
 {
-  "updated": "2026-03-13T15:03:47.306957-04:00Z",
+  "updated": "2026-03-13T15:39:16.929144-04:00Z",
   "metro": {
     "station": "Rosemont",
     "next_departures": [
-      "15:06",
-      "15:07",
-      "15:09",
-      "15:12",
-      "15:13",
-      "15:16",
-      "15:17",
-      "15:19",
-      "15:22",
-      "15:23",
-      "15:26",
-      "15:27",
-      "15:30",
-      "15:32",
-      "15:37",
-      "15:39",
       "15:41",
       "15:43",
       "15:45",
@@ -32,47 +16,63 @@
       "15:59",
       "16:01",
       "16:04",
-      "16:05"
+      "16:05",
+      "16:08",
+      "16:11",
+      "16:12",
+      "16:14",
+      "16:18",
+      "16:21",
+      "16:24",
+      "16:25",
+      "16:27",
+      "16:31",
+      "16:32",
+      "16:33",
+      "16:34",
+      "16:37",
+      "16:38",
+      "16:40"
     ],
-    "next_departure": "15:06",
-    "minutes_until": 3,
+    "next_departure": "15:41",
+    "minutes_until": 2,
     "line_color": "#D95700"
   },
   "assets": [
     {
       "symbol": "XEQT",
-      "price": 39.95,
-      "change_percent": -0.05,
+      "price": 39.84,
+      "change_percent": -0.34,
       "color": "blue"
     },
     {
       "symbol": "BTC",
-      "price": 71023.7,
-      "change_percent": 0.73,
+      "price": 71120.12,
+      "change_percent": 0.87,
       "color": "orange"
     },
     {
       "symbol": "GOLD",
-      "price": 5048.9,
-      "change_percent": -1.5,
+      "price": 5038.5,
+      "change_percent": -1.7,
       "color": "yellow"
     },
     {
       "symbol": "SPX",
-      "price": 6647.93,
-      "change_percent": -0.37,
+      "price": 6628.95,
+      "change_percent": -0.65,
       "color": "purple"
     }
   ],
   "market_open": true,
   "stock": {
     "symbol": "XEQT",
-    "price": 39.95,
-    "change_percent": -0.05,
+    "price": 39.84,
+    "change_percent": -0.34,
     "market_open": true
   },
   "time": {
-    "display": "15:03",
+    "display": "15:39",
     "timezone": "America/Montreal",
     "date": "MAR 13"
   }
