@@ -1,21 +1,8 @@
 {
-  "updated": "2026-03-18T16:01:09.696893-04:00Z",
+  "updated": "2026-03-18T16:45:25.935135-04:00Z",
   "metro": {
     "station": "Rosemont",
     "next_departures": [
-      "16:05",
-      "16:08",
-      "16:11",
-      "16:14",
-      "16:18",
-      "16:21",
-      "16:24",
-      "16:27",
-      "16:31",
-      "16:34",
-      "16:37",
-      "16:40",
-      "16:44",
       "16:47",
       "16:50",
       "16:53",
@@ -32,10 +19,23 @@
       "17:28",
       "17:32",
       "17:35",
-      "17:38"
+      "17:38",
+      "17:41",
+      "17:45",
+      "17:49",
+      "17:52",
+      "17:56",
+      "18:00",
+      "18:04",
+      "18:08",
+      "18:12",
+      "18:17",
+      "18:21",
+      "18:26",
+      "18:30"
     ],
-    "next_departure": "16:05",
-    "minutes_until": 4,
+    "next_departure": "16:47",
+    "minutes_until": 2,
     "line_color": "#D95700"
   },
   "assets": [
@@ -47,19 +47,19 @@
     },
     {
       "symbol": "BTC",
-      "price": 71111.24,
-      "change_percent": -3.82,
+      "price": 71194.43,
+      "change_percent": -3.7,
       "color": "orange"
     },
     {
       "symbol": "GOLD",
-      "price": 4847.0,
-      "change_percent": -3.22,
+      "price": 4817.0,
+      "change_percent": -3.82,
       "color": "yellow"
     },
     {
       "symbol": "SPX",
-      "price": 6624.71,
+      "price": 6624.7,
       "change_percent": -1.36,
       "color": "purple"
     }
@@ -72,7 +72,7 @@
     "market_open": false
   },
   "time": {
-    "display": "16:01",
+    "display": "16:45",
     "timezone": "America/Montreal",
     "date": "MAR 18"
   }
