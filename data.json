@@ -1,24 +1,8 @@
 {
-  "updated": "2026-03-20T12:23:05.221876-04:00Z",
+  "updated": "2026-03-20T13:05:16.028515-04:00Z",
   "metro": {
     "station": "Rosemont",
     "next_departures": [
-      "12:25",
-      "12:28",
-      "12:29",
-      "12:31",
-      "12:35",
-      "12:37",
-      "12:41",
-      "12:43",
-      "12:45",
-      "12:48",
-      "12:49",
-      "12:52",
-      "12:54",
-      "12:55",
-      "12:59",
-      "13:01",
       "13:06",
       "13:07",
       "13:08",
@@ -32,47 +16,63 @@
       "13:31",
       "13:34",
       "13:37",
-      "13:40"
+      "13:40",
+      "13:41",
+      "13:43",
+      "13:47",
+      "13:49",
+      "13:54",
+      "13:55",
+      "14:00",
+      "14:01",
+      "14:07",
+      "14:08",
+      "14:13",
+      "14:15",
+      "14:19",
+      "14:20",
+      "14:21",
+      "14:25"
     ],
-    "next_departure": "12:25",
-    "minutes_until": 2,
+    "next_departure": "13:06",
+    "minutes_until": 1,
     "line_color": "#D95700"
   },
   "assets": [
     {
       "symbol": "XEQT",
-      "price": 39.17,
-      "change_percent": -1.29,
+      "price": 39.09,
+      "change_percent": -1.49,
       "color": "blue"
     },
     {
       "symbol": "BTC",
-      "price": 70067.39,
-      "change_percent": 0.21,
+      "price": 69836.31,
+      "change_percent": -0.12,
       "color": "orange"
     },
     {
       "symbol": "GOLD",
-      "price": 4585.9,
-      "change_percent": -0.43,
+      "price": 4585.6,
+      "change_percent": -0.44,
       "color": "yellow"
     },
     {
       "symbol": "SPX",
-      "price": 6564.1,
-      "change_percent": -0.64,
+      "price": 6557.9,
+      "change_percent": -0.74,
       "color": "purple"
     }
   ],
   "market_open": true,
   "stock": {
     "symbol": "XEQT",
-    "price": 39.17,
-    "change_percent": -1.29,
+    "price": 39.09,
+    "change_percent": -1.49,
     "market_open": true
   },
   "time": {
-    "display": "12:23",
+    "display": "13:05",
     "timezone": "America/Montreal",
     "date": "MAR 20"
   }
