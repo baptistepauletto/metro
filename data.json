@@ -1,25 +1,8 @@
 {
-  "updated": "2026-03-20T13:05:16.028515-04:00Z",
+  "updated": "2026-03-20T13:48:13.270660-04:00Z",
   "metro": {
     "station": "Rosemont",
     "next_departures": [
-      "13:06",
-      "13:07",
-      "13:08",
-      "13:13",
-      "13:14",
-      "13:19",
-      "13:20",
-      "13:21",
-      "13:25",
-      "13:27",
-      "13:31",
-      "13:34",
-      "13:37",
-      "13:40",
-      "13:41",
-      "13:43",
-      "13:47",
       "13:49",
       "13:54",
       "13:55",
@@ -32,47 +15,64 @@
       "14:19",
       "14:20",
       "14:21",
-      "14:25"
+      "14:25",
+      "14:27",
+      "14:28",
+      "14:31",
+      "14:33",
+      "14:35",
+      "14:37",
+      "14:40",
+      "14:42",
+      "14:43",
+      "14:46",
+      "14:49",
+      "14:53",
+      "14:55",
+      "14:56",
+      "15:00",
+      "15:01",
+      "15:02"
     ],
-    "next_departure": "13:06",
+    "next_departure": "13:49",
     "minutes_until": 1,
     "line_color": "#D95700"
   },
   "assets": [
     {
       "symbol": "XEQT",
-      "price": 39.09,
-      "change_percent": -1.49,
+      "price": 38.97,
+      "change_percent": -1.79,
       "color": "blue"
     },
     {
       "symbol": "BTC",
-      "price": 69836.31,
-      "change_percent": -0.12,
+      "price": 69559.2,
+      "change_percent": -0.52,
       "color": "orange"
     },
     {
       "symbol": "GOLD",
-      "price": 4585.6,
-      "change_percent": -0.44,
+      "price": 4563.3,
+      "change_percent": -0.92,
       "color": "yellow"
     },
     {
       "symbol": "SPX",
-      "price": 6557.9,
-      "change_percent": -0.74,
+      "price": 6533.19,
+      "change_percent": -1.11,
       "color": "purple"
     }
   ],
   "market_open": true,
   "stock": {
     "symbol": "XEQT",
-    "price": 39.09,
-    "change_percent": -1.49,
+    "price": 38.97,
+    "change_percent": -1.79,
     "market_open": true
   },
   "time": {
-    "display": "13:05",
+    "display": "13:48",
     "timezone": "America/Montreal",
     "date": "MAR 20"
   }
