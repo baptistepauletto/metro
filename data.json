@@ -1,24 +1,8 @@
 {
-  "updated": "2026-03-23T09:10:44.436646-04:00Z",
+  "updated": "2026-03-23T10:19:48.573916-04:00Z",
   "metro": {
     "station": "Rosemont",
     "next_departures": [
-      "09:14",
-      "09:17",
-      "09:20",
-      "09:24",
-      "09:28",
-      "09:32",
-      "09:35",
-      "09:39",
-      "09:43",
-      "09:48",
-      "09:53",
-      "09:58",
-      "10:03",
-      "10:08",
-      "10:13",
-      "10:19",
       "10:25",
       "10:31",
       "10:37",
@@ -32,47 +16,63 @@
       "11:25",
       "11:31",
       "11:37",
-      "11:43"
+      "11:43",
+      "11:49",
+      "11:55",
+      "12:01",
+      "12:07",
+      "12:13",
+      "12:19",
+      "12:25",
+      "12:31",
+      "12:37",
+      "12:43",
+      "12:49",
+      "12:55",
+      "13:01",
+      "13:07",
+      "13:13",
+      "13:19"
     ],
-    "next_departure": "09:14",
-    "minutes_until": 4,
+    "next_departure": "10:25",
+    "minutes_until": 6,
     "line_color": "#D95700"
   },
   "assets": [
     {
       "symbol": "XEQT",
-      "price": 38.81,
-      "change_percent": -2.19,
+      "price": 39.65,
+      "change_percent": 2.16,
       "color": "blue"
     },
     {
       "symbol": "BTC",
-      "price": 70629.49,
-      "change_percent": 4.09,
+      "price": 71683.44,
+      "change_percent": 5.64,
       "color": "orange"
     },
     {
       "symbol": "GOLD",
-      "price": 4473.5,
-      "change_percent": -2.22,
+      "price": 4466.8,
+      "change_percent": -2.36,
       "color": "yellow"
     },
     {
       "symbol": "SPX",
-      "price": 6506.48,
-      "change_percent": -1.51,
+      "price": 6636.12,
+      "change_percent": 1.99,
       "color": "purple"
     }
   ],
-  "market_open": false,
+  "market_open": true,
   "stock": {
     "symbol": "XEQT",
-    "price": 38.81,
-    "change_percent": -2.19,
-    "market_open": false
+    "price": 39.65,
+    "change_percent": 2.16,
+    "market_open": true
   },
   "time": {
-    "display": "09:10",
+    "display": "10:19",
     "timezone": "America/Montreal",
     "date": "MAR 23"
   }
