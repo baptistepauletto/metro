@@ -1,25 +1,8 @@
 {
-  "updated": "2026-03-26T10:54:20.980955-04:00Z",
+  "updated": "2026-03-26T11:59:04.451456-04:00Z",
   "metro": {
     "station": "Rosemont",
     "next_departures": [
-      "10:55",
-      "11:00",
-      "11:01",
-      "11:07",
-      "11:10",
-      "11:13",
-      "11:19",
-      "11:20",
-      "11:25",
-      "11:30",
-      "11:31",
-      "11:37",
-      "11:40",
-      "11:43",
-      "11:49",
-      "11:50",
-      "11:55",
       "12:00",
       "12:01",
       "12:07",
@@ -32,47 +15,64 @@
       "12:31",
       "12:37",
       "12:40",
-      "12:43"
+      "12:43",
+      "12:49",
+      "12:50",
+      "12:55",
+      "13:00",
+      "13:01",
+      "13:07",
+      "13:10",
+      "13:13",
+      "13:19",
+      "13:20",
+      "13:25",
+      "13:30",
+      "13:31",
+      "13:37",
+      "13:40",
+      "13:43",
+      "13:49"
     ],
-    "next_departure": "10:55",
+    "next_departure": "12:00",
     "minutes_until": 1,
     "line_color": "#D95700"
   },
   "assets": [
     {
       "symbol": "XEQT",
-      "price": 39.68,
-      "change_percent": -0.57,
+      "price": 39.66,
+      "change_percent": -0.62,
       "color": "blue"
     },
     {
       "symbol": "BTC",
-      "price": 69451.5,
-      "change_percent": -2.61,
+      "price": 69129.32,
+      "change_percent": -3.06,
       "color": "orange"
     },
     {
       "symbol": "GOLD",
-      "price": 4458.3,
-      "change_percent": -2.06,
+      "price": 4437.4,
+      "change_percent": -2.52,
       "color": "yellow"
     },
     {
       "symbol": "SPX",
-      "price": 6541.43,
-      "change_percent": -0.77,
+      "price": 6540.28,
+      "change_percent": -0.78,
       "color": "purple"
     }
   ],
   "market_open": true,
   "stock": {
     "symbol": "XEQT",
-    "price": 39.68,
-    "change_percent": -0.57,
+    "price": 39.66,
+    "change_percent": -0.62,
     "market_open": true
   },
   "time": {
-    "display": "10:54",
+    "display": "11:59",
     "timezone": "America/Montreal",
     "date": "MAR 26"
   }
