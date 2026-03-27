@@ -1,23 +1,8 @@
 {
-  "updated": "2026-03-27T15:47:52.668527-04:00Z",
+  "updated": "2026-03-27T16:19:27.501229-04:00Z",
   "metro": {
     "station": "Rosemont",
     "next_departures": [
-      "15:48",
-      "15:50",
-      "15:52",
-      "15:55",
-      "15:57",
-      "15:58",
-      "15:59",
-      "16:01",
-      "16:04",
-      "16:05",
-      "16:08",
-      "16:11",
-      "16:12",
-      "16:14",
-      "16:18",
       "16:21",
       "16:24",
       "16:25",
@@ -32,47 +17,62 @@
       "16:44",
       "16:45",
       "16:47",
-      "16:50"
+      "16:50",
+      "16:51",
+      "16:53",
+      "16:55",
+      "16:56",
+      "16:58",
+      "16:59",
+      "17:02",
+      "17:03",
+      "17:05",
+      "17:06",
+      "17:09",
+      "17:11",
+      "17:12",
+      "17:15",
+      "17:17"
     ],
-    "next_departure": "15:48",
-    "minutes_until": 1,
+    "next_departure": "16:21",
+    "minutes_until": 2,
     "line_color": "#D95700"
   },
   "assets": [
     {
       "symbol": "XEQT",
-      "price": 38.89,
-      "change_percent": -0.97,
+      "price": 38.96,
+      "change_percent": -0.79,
       "color": "blue"
     },
     {
       "symbol": "BTC",
-      "price": 65870.0,
-      "change_percent": -4.23,
+      "price": 66010.28,
+      "change_percent": -4.03,
       "color": "orange"
     },
     {
       "symbol": "GOLD",
-      "price": 4547.2,
-      "change_percent": 3.13,
+      "price": 4539.1,
+      "change_percent": 2.95,
       "color": "yellow"
     },
     {
       "symbol": "SPX",
-      "price": 6362.98,
-      "change_percent": -1.76,
+      "price": 6368.85,
+      "change_percent": -1.67,
       "color": "purple"
     }
   ],
-  "market_open": true,
+  "market_open": false,
   "stock": {
     "symbol": "XEQT",
-    "price": 38.89,
-    "change_percent": -0.97,
-    "market_open": true
+    "price": 38.96,
+    "change_percent": -0.79,
+    "market_open": false
   },
   "time": {
-    "display": "15:47",
+    "display": "16:19",
     "timezone": "America/Montreal",
     "date": "MAR 27"
   }
