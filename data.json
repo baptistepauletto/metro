@@ -1,19 +1,8 @@
 {
-  "updated": "2026-03-30T15:15:16.006274-04:00Z",
+  "updated": "2026-03-30T16:00:59.811598-04:00Z",
   "metro": {
     "station": "Rosemont",
     "next_departures": [
-      "15:17",
-      "15:22",
-      "15:27",
-      "15:32",
-      "15:37",
-      "15:41",
-      "15:45",
-      "15:48",
-      "15:52",
-      "15:55",
-      "15:58",
       "16:01",
       "16:05",
       "16:08",
@@ -32,47 +21,58 @@
       "16:50",
       "16:53",
       "16:56",
-      "16:59"
+      "16:59",
+      "17:03",
+      "17:06",
+      "17:09",
+      "17:12",
+      "17:15",
+      "17:19",
+      "17:22",
+      "17:25",
+      "17:28",
+      "17:32",
+      "17:35"
     ],
-    "next_departure": "15:17",
-    "minutes_until": 2,
+    "next_departure": "16:01",
+    "minutes_until": 1,
     "line_color": "#D95700"
   },
   "assets": [
     {
       "symbol": "XEQT",
-      "price": 38.83,
-      "change_percent": -0.33,
+      "price": 38.97,
+      "change_percent": 0.03,
       "color": "blue"
     },
     {
       "symbol": "BTC",
-      "price": 66295.05,
-      "change_percent": 0.51,
+      "price": 66480.24,
+      "change_percent": 0.79,
       "color": "orange"
     },
     {
       "symbol": "GOLD",
-      "price": 4529.4,
-      "change_percent": 0.11,
+      "price": 4538.8,
+      "change_percent": 0.32,
       "color": "yellow"
     },
     {
       "symbol": "SPX",
-      "price": 6323.82,
-      "change_percent": -0.71,
+      "price": 6343.84,
+      "change_percent": -0.39,
       "color": "purple"
     }
   ],
-  "market_open": true,
+  "market_open": false,
   "stock": {
     "symbol": "XEQT",
-    "price": 38.83,
-    "change_percent": -0.33,
-    "market_open": true
+    "price": 38.97,
+    "change_percent": 0.03,
+    "market_open": false
   },
   "time": {
-    "display": "15:15",
+    "display": "16:00",
     "timezone": "America/Montreal",
     "date": "MAR 30"
   }
