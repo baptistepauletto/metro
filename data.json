@@ -1,25 +1,8 @@
 {
-  "updated": "2026-04-09T15:22:53.464947-04:00Z",
+  "updated": "2026-04-09T16:09:47.193640-04:00Z",
   "metro": {
     "station": "Rosemont",
     "next_departures": [
-      "15:27",
-      "15:29",
-      "15:32",
-      "15:37",
-      "15:39",
-      "15:41",
-      "15:45",
-      "15:48",
-      "15:49",
-      "15:52",
-      "15:55",
-      "15:58",
-      "15:59",
-      "16:01",
-      "16:05",
-      "16:08",
-      "16:09",
       "16:11",
       "16:14",
       "16:18",
@@ -32,47 +15,64 @@
       "16:34",
       "16:37",
       "16:39",
-      "16:40"
+      "16:40",
+      "16:44",
+      "16:47",
+      "16:49",
+      "16:50",
+      "16:53",
+      "16:56",
+      "16:59",
+      "17:03",
+      "17:06",
+      "17:09",
+      "17:12",
+      "17:15",
+      "17:19",
+      "17:22",
+      "17:25",
+      "17:28",
+      "17:29"
     ],
-    "next_departure": "15:27",
-    "minutes_until": 5,
+    "next_departure": "16:11",
+    "minutes_until": 2,
     "line_color": "#D95700"
   },
   "assets": [
     {
       "symbol": "XEQT",
-      "price": 41.55,
-      "change_percent": 0.01,
+      "price": 41.54,
+      "change_percent": -0.02,
       "color": "blue"
     },
     {
       "symbol": "BTC",
-      "price": 71952.42,
-      "change_percent": 1.21,
+      "price": 72069.91,
+      "change_percent": 1.37,
       "color": "orange"
     },
     {
       "symbol": "GOLD",
-      "price": 4805.8,
-      "change_percent": 0.6,
+      "price": 4792.9,
+      "change_percent": 0.33,
       "color": "yellow"
     },
     {
       "symbol": "SPX",
-      "price": 6821.14,
-      "change_percent": 0.57,
+      "price": 6824.66,
+      "change_percent": 0.62,
       "color": "purple"
     }
   ],
-  "market_open": true,
+  "market_open": false,
   "stock": {
     "symbol": "XEQT",
-    "price": 41.55,
-    "change_percent": 0.01,
-    "market_open": true
+    "price": 41.54,
+    "change_percent": -0.02,
+    "market_open": false
   },
   "time": {
-    "display": "15:22",
+    "display": "16:09",
     "timezone": "America/Montreal",
     "date": "APR 09"
   }
