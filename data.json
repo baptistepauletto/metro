@@ -1,28 +1,8 @@
 {
-  "updated": "2026-04-10T10:18:56.763568-04:00Z",
+  "updated": "2026-04-10T11:09:21.470695-04:00Z",
   "metro": {
     "station": "Rosemont",
     "next_departures": [
-      "10:19",
-      "10:22",
-      "10:24",
-      "10:25",
-      "10:30",
-      "10:31",
-      "10:32",
-      "10:37",
-      "10:39",
-      "10:40",
-      "10:43",
-      "10:47",
-      "10:48",
-      "10:49",
-      "10:55",
-      "10:56",
-      "11:01",
-      "11:03",
-      "11:05",
-      "11:07",
       "11:11",
       "11:13",
       "11:19",
@@ -32,35 +12,55 @@
       "11:30",
       "11:31",
       "11:35",
-      "11:37"
+      "11:37",
+      "11:39",
+      "11:42",
+      "11:43",
+      "11:48",
+      "11:49",
+      "11:55",
+      "11:56",
+      "12:01",
+      "12:02",
+      "12:05",
+      "12:07",
+      "12:08",
+      "12:13",
+      "12:15",
+      "12:19",
+      "12:21",
+      "12:25",
+      "12:28",
+      "12:29",
+      "12:31"
     ],
-    "next_departure": "10:19",
-    "minutes_until": 1,
+    "next_departure": "11:11",
+    "minutes_until": 2,
     "line_color": "#D95700"
   },
   "assets": [
     {
       "symbol": "XEQT",
       "price": 41.73,
-      "change_percent": 0.46,
+      "change_percent": 0.45,
       "color": "blue"
     },
     {
       "symbol": "BTC",
-      "price": 72785.84,
-      "change_percent": 1.4,
+      "price": 72946.74,
+      "change_percent": 1.62,
       "color": "orange"
     },
     {
       "symbol": "GOLD",
-      "price": 4802.2,
-      "change_percent": -0.33,
+      "price": 4797.4,
+      "change_percent": -0.43,
       "color": "yellow"
     },
     {
       "symbol": "SPX",
-      "price": 6836.78,
-      "change_percent": 0.18,
+      "price": 6838.05,
+      "change_percent": 0.2,
       "color": "purple"
     }
   ],
@@ -68,11 +68,11 @@
   "stock": {
     "symbol": "XEQT",
     "price": 41.73,
-    "change_percent": 0.46,
+    "change_percent": 0.45,
     "market_open": true
   },
   "time": {
-    "display": "10:18",
+    "display": "11:09",
     "timezone": "America/Montreal",
     "date": "APR 10"
   }
