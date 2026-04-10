@@ -1,24 +1,8 @@
 {
-  "updated": "2026-04-10T15:29:14.957109-04:00Z",
+  "updated": "2026-04-10T16:01:47.868569-04:00Z",
   "metro": {
     "station": "Rosemont",
     "next_departures": [
-      "15:30",
-      "15:32",
-      "15:37",
-      "15:39",
-      "15:41",
-      "15:43",
-      "15:45",
-      "15:46",
-      "15:48",
-      "15:50",
-      "15:52",
-      "15:55",
-      "15:57",
-      "15:58",
-      "15:59",
-      "16:01",
       "16:04",
       "16:05",
       "16:08",
@@ -32,47 +16,63 @@
       "16:27",
       "16:31",
       "16:32",
-      "16:33"
+      "16:33",
+      "16:34",
+      "16:37",
+      "16:38",
+      "16:40",
+      "16:44",
+      "16:45",
+      "16:47",
+      "16:50",
+      "16:51",
+      "16:53",
+      "16:55",
+      "16:56",
+      "16:58",
+      "16:59",
+      "17:02",
+      "17:03"
     ],
-    "next_departure": "15:30",
-    "minutes_until": 1,
+    "next_departure": "16:04",
+    "minutes_until": 3,
     "line_color": "#D95700"
   },
   "assets": [
     {
       "symbol": "XEQT",
-      "price": 41.66,
-      "change_percent": 0.3,
+      "price": 41.71,
+      "change_percent": 0.41,
       "color": "blue"
     },
     {
       "symbol": "BTC",
-      "price": 72880.15,
-      "change_percent": 1.53,
+      "price": 73234.45,
+      "change_percent": 2.02,
       "color": "orange"
     },
     {
       "symbol": "GOLD",
-      "price": 4793.5,
-      "change_percent": -0.51,
+      "price": 4783.5,
+      "change_percent": -0.72,
       "color": "yellow"
     },
     {
       "symbol": "SPX",
-      "price": 6819.75,
-      "change_percent": -0.07,
+      "price": 6816.79,
+      "change_percent": -0.12,
       "color": "purple"
     }
   ],
-  "market_open": true,
+  "market_open": false,
   "stock": {
     "symbol": "XEQT",
-    "price": 41.66,
-    "change_percent": 0.3,
-    "market_open": true
+    "price": 41.71,
+    "change_percent": 0.41,
+    "market_open": false
   },
   "time": {
-    "display": "15:29",
+    "display": "16:01",
     "timezone": "America/Montreal",
     "date": "APR 10"
   }
