@@ -1,29 +1,8 @@
 {
-  "updated": "2026-04-17T11:14:13.685480-04:00Z",
+  "updated": "2026-04-17T12:13:29.773467-04:00Z",
   "metro": {
     "station": "Rosemont",
     "next_departures": [
-      "11:19",
-      "11:22",
-      "11:25",
-      "11:27",
-      "11:30",
-      "11:31",
-      "11:35",
-      "11:37",
-      "11:39",
-      "11:42",
-      "11:43",
-      "11:48",
-      "11:49",
-      "11:55",
-      "11:56",
-      "12:01",
-      "12:02",
-      "12:05",
-      "12:07",
-      "12:08",
-      "12:13",
       "12:15",
       "12:19",
       "12:21",
@@ -32,47 +11,68 @@
       "12:29",
       "12:31",
       "12:35",
-      "12:37"
+      "12:37",
+      "12:41",
+      "12:43",
+      "12:45",
+      "12:48",
+      "12:49",
+      "12:52",
+      "12:54",
+      "12:55",
+      "12:59",
+      "13:01",
+      "13:06",
+      "13:07",
+      "13:08",
+      "13:13",
+      "13:14",
+      "13:19",
+      "13:20",
+      "13:21",
+      "13:25",
+      "13:27",
+      "13:31"
     ],
-    "next_departure": "11:19",
-    "minutes_until": 5,
+    "next_departure": "12:15",
+    "minutes_until": 2,
     "line_color": "#D95700"
   },
   "assets": [
     {
       "symbol": "XEQT",
-      "price": 42.72,
-      "change_percent": 1.11,
+      "price": 42.79,
+      "change_percent": 1.28,
       "color": "blue"
     },
     {
       "symbol": "BTC",
-      "price": 77932.49,
-      "change_percent": 3.7,
+      "price": 78032.0,
+      "change_percent": 3.83,
       "color": "orange"
     },
     {
       "symbol": "GOLD",
-      "price": 4887.6,
-      "change_percent": 1.65,
+      "price": 4892.4,
+      "change_percent": 1.75,
       "color": "yellow"
     },
     {
       "symbol": "SPX",
-      "price": 7127.83,
-      "change_percent": 1.23,
+      "price": 7139.09,
+      "change_percent": 1.39,
       "color": "purple"
     }
   ],
   "market_open": true,
   "stock": {
     "symbol": "XEQT",
-    "price": 42.72,
-    "change_percent": 1.11,
+    "price": 42.79,
+    "change_percent": 1.28,
     "market_open": true
   },
   "time": {
-    "display": "11:14",
+    "display": "12:13",
     "timezone": "America/Montreal",
     "date": "APR 17"
   }
