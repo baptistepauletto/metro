@@ -1,24 +1,8 @@
 {
-  "updated": "2026-04-27T14:57:22.209033-04:00Z",
+  "updated": "2026-04-27T16:05:32.423220-04:00Z",
   "metro": {
     "station": "Rosemont",
     "next_departures": [
-      "15:01",
-      "15:07",
-      "15:12",
-      "15:17",
-      "15:22",
-      "15:27",
-      "15:32",
-      "15:37",
-      "15:41",
-      "15:45",
-      "15:48",
-      "15:52",
-      "15:55",
-      "15:58",
-      "16:01",
-      "16:05",
       "16:08",
       "16:11",
       "16:14",
@@ -32,47 +16,63 @@
       "16:40",
       "16:44",
       "16:47",
-      "16:50"
+      "16:50",
+      "16:53",
+      "16:56",
+      "16:59",
+      "17:03",
+      "17:06",
+      "17:09",
+      "17:12",
+      "17:15",
+      "17:19",
+      "17:22",
+      "17:25",
+      "17:28",
+      "17:32",
+      "17:35",
+      "17:38",
+      "17:41"
     ],
-    "next_departure": "15:01",
-    "minutes_until": 4,
+    "next_departure": "16:08",
+    "minutes_until": 3,
     "line_color": "#D95700"
   },
   "assets": [
     {
       "symbol": "XEQT",
-      "price": 42.2,
-      "change_percent": -0.31,
+      "price": 42.24,
+      "change_percent": -0.21,
       "color": "blue"
     },
     {
       "symbol": "BTC",
-      "price": 76850.28,
-      "change_percent": -2.31,
+      "price": 76926.72,
+      "change_percent": -2.22,
       "color": "orange"
     },
     {
       "symbol": "GOLD",
-      "price": 4697.2,
-      "change_percent": -0.92,
+      "price": 4695.2,
+      "change_percent": -0.96,
       "color": "yellow"
     },
     {
       "symbol": "SPX",
-      "price": 7172.86,
-      "change_percent": 0.11,
+      "price": 7173.91,
+      "change_percent": 0.12,
       "color": "purple"
     }
   ],
-  "market_open": true,
+  "market_open": false,
   "stock": {
     "symbol": "XEQT",
-    "price": 42.2,
-    "change_percent": -0.31,
-    "market_open": true
+    "price": 42.24,
+    "change_percent": -0.21,
+    "market_open": false
   },
   "time": {
-    "display": "14:57",
+    "display": "16:05",
     "timezone": "America/Montreal",
     "date": "APR 27"
   }
