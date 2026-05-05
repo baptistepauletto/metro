@@ -1,24 +1,8 @@
 {
-  "updated": "2026-05-05T14:59:00.989752-04:00Z",
+  "updated": "2026-05-05T16:06:48.742771-04:00Z",
   "metro": {
     "station": "Rosemont",
     "next_departures": [
-      "15:01",
-      "15:07",
-      "15:12",
-      "15:17",
-      "15:22",
-      "15:27",
-      "15:32",
-      "15:37",
-      "15:41",
-      "15:45",
-      "15:48",
-      "15:52",
-      "15:55",
-      "15:58",
-      "16:01",
-      "16:05",
       "16:08",
       "16:11",
       "16:14",
@@ -32,47 +16,63 @@
       "16:40",
       "16:44",
       "16:47",
-      "16:50"
+      "16:50",
+      "16:53",
+      "16:56",
+      "16:59",
+      "17:03",
+      "17:06",
+      "17:09",
+      "17:12",
+      "17:15",
+      "17:19",
+      "17:22",
+      "17:25",
+      "17:28",
+      "17:32",
+      "17:35",
+      "17:38",
+      "17:41"
     ],
-    "next_departure": "15:01",
+    "next_departure": "16:08",
     "minutes_until": 2,
     "line_color": "#D95700"
   },
   "assets": [
     {
       "symbol": "XEQT",
-      "price": 42.53,
-      "change_percent": 0.85,
+      "price": 42.5,
+      "change_percent": 0.78,
       "color": "blue"
     },
     {
       "symbol": "BTC",
-      "price": 80937.36,
-      "change_percent": 1.39,
+      "price": 81654.76,
+      "change_percent": 2.29,
       "color": "orange"
     },
     {
       "symbol": "GOLD",
-      "price": 4574.0,
-      "change_percent": 0.9,
+      "price": 4563.6,
+      "change_percent": 0.67,
       "color": "yellow"
     },
     {
       "symbol": "SPX",
-      "price": 7266.23,
-      "change_percent": 0.91,
+      "price": 7259.22,
+      "change_percent": 0.81,
       "color": "purple"
     }
   ],
-  "market_open": true,
+  "market_open": false,
   "stock": {
     "symbol": "XEQT",
-    "price": 42.53,
-    "change_percent": 0.85,
-    "market_open": true
+    "price": 42.5,
+    "change_percent": 0.78,
+    "market_open": false
   },
   "time": {
-    "display": "14:59",
+    "display": "16:06",
     "timezone": "America/Montreal",
     "date": "MAY 05"
   }
