@@ -1,78 +1,78 @@
 {
-  "updated": "2026-05-11T14:23:39.968713-04:00Z",
+  "updated": "2026-05-11T16:09:08.891414-04:00Z",
   "metro": {
     "station": "Rosemont",
     "next_departures": [
-      "14:25",
-      "14:31",
-      "14:37",
-      "14:43",
-      "14:49",
-      "14:55",
-      "15:01",
-      "15:07",
-      "15:12",
-      "15:17",
-      "15:22",
-      "15:27",
-      "15:32",
-      "15:37",
-      "15:41",
-      "15:45",
-      "15:48",
-      "15:52",
-      "15:55",
-      "15:58",
-      "16:01",
-      "16:05",
-      "16:08",
       "16:11",
       "16:14",
       "16:18",
       "16:21",
       "16:24",
       "16:27",
-      "16:31"
+      "16:31",
+      "16:34",
+      "16:37",
+      "16:40",
+      "16:44",
+      "16:47",
+      "16:50",
+      "16:53",
+      "16:56",
+      "16:59",
+      "17:03",
+      "17:06",
+      "17:09",
+      "17:12",
+      "17:15",
+      "17:19",
+      "17:22",
+      "17:25",
+      "17:28",
+      "17:32",
+      "17:35",
+      "17:38",
+      "17:41",
+      "17:45"
     ],
-    "next_departure": "14:25",
+    "next_departure": "16:11",
     "minutes_until": 2,
     "line_color": "#D95700"
   },
   "assets": [
     {
       "symbol": "XEQT",
-      "price": 43.48,
-      "change_percent": 0.23,
+      "price": 43.43,
+      "change_percent": 0.12,
       "color": "blue"
     },
     {
       "symbol": "BTC",
-      "price": 81929.97,
-      "change_percent": -0.29,
+      "price": 82047.71,
+      "change_percent": -0.14,
       "color": "orange"
     },
     {
       "symbol": "GOLD",
-      "price": 4733.4,
-      "change_percent": 0.06,
+      "price": 4745.0,
+      "change_percent": 0.3,
       "color": "yellow"
     },
     {
       "symbol": "SPX",
-      "price": 7425.6,
-      "change_percent": 0.36,
+      "price": 7412.84,
+      "change_percent": 0.19,
       "color": "purple"
     }
   ],
-  "market_open": true,
+  "market_open": false,
   "stock": {
     "symbol": "XEQT",
-    "price": 43.48,
-    "change_percent": 0.23,
-    "market_open": true
+    "price": 43.43,
+    "change_percent": 0.12,
+    "market_open": false
   },
   "time": {
-    "display": "14:23",
+    "display": "16:09",
     "timezone": "America/Montreal",
     "date": "MAY 11"
   }
