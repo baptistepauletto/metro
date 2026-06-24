@@ -1,25 +1,8 @@
 {
-  "updated": "2026-06-24T13:21:13.623062-04:00Z",
+  "updated": "2026-06-24T15:01:53.941912-04:00Z",
   "metro": {
     "station": "Rosemont",
     "next_departures": [
-      "13:25",
-      "13:31",
-      "13:37",
-      "13:43",
-      "13:49",
-      "13:55",
-      "14:01",
-      "14:07",
-      "14:13",
-      "14:19",
-      "14:25",
-      "14:31",
-      "14:37",
-      "14:43",
-      "14:49",
-      "14:55",
-      "15:01",
       "15:07",
       "15:12",
       "15:17",
@@ -32,47 +15,64 @@
       "15:48",
       "15:52",
       "15:55",
-      "15:58"
+      "15:58",
+      "16:01",
+      "16:05",
+      "16:08",
+      "16:11",
+      "16:14",
+      "16:18",
+      "16:21",
+      "16:24",
+      "16:27",
+      "16:31",
+      "16:34",
+      "16:37",
+      "16:40",
+      "16:44",
+      "16:47",
+      "16:50",
+      "16:53"
     ],
-    "next_departure": "13:25",
-    "minutes_until": 4,
+    "next_departure": "15:07",
+    "minutes_until": 6,
     "line_color": "#D95700"
   },
   "assets": [
     {
       "symbol": "XEQT",
-      "price": 44.84,
-      "change_percent": -0.22,
+      "price": 44.81,
+      "change_percent": -0.29,
       "color": "blue"
     },
     {
       "symbol": "BTC",
-      "price": 59330.49,
-      "change_percent": -5.31,
+      "price": 59551.96,
+      "change_percent": -4.96,
       "color": "orange"
     },
     {
       "symbol": "GOLD",
-      "price": 4025.4,
-      "change_percent": -2.99,
+      "price": 3996.6,
+      "change_percent": -3.68,
       "color": "yellow"
     },
     {
       "symbol": "SPX",
-      "price": 7359.72,
-      "change_percent": -0.08,
+      "price": 7342.45,
+      "change_percent": -0.31,
       "color": "purple"
     }
   ],
   "market_open": true,
   "stock": {
     "symbol": "XEQT",
-    "price": 44.84,
-    "change_percent": -0.22,
+    "price": 44.81,
+    "change_percent": -0.29,
     "market_open": true
   },
   "time": {
-    "display": "13:21",
+    "display": "15:01",
     "timezone": "America/Montreal",
     "date": "JUN 24"
   }
