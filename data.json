@@ -1,23 +1,8 @@
 {
-  "updated": "2026-07-14T14:51:42.848928-04:00Z",
+  "updated": "2026-07-14T16:00:09.875053-04:00Z",
   "metro": {
     "station": "Rosemont",
     "next_departures": [
-      "14:55",
-      "15:01",
-      "15:07",
-      "15:12",
-      "15:17",
-      "15:22",
-      "15:27",
-      "15:32",
-      "15:37",
-      "15:41",
-      "15:45",
-      "15:48",
-      "15:52",
-      "15:55",
-      "15:58",
       "16:01",
       "16:05",
       "16:08",
@@ -32,47 +17,62 @@
       "16:37",
       "16:40",
       "16:44",
-      "16:47"
+      "16:47",
+      "16:50",
+      "16:53",
+      "16:56",
+      "16:59",
+      "17:03",
+      "17:06",
+      "17:09",
+      "17:12",
+      "17:15",
+      "17:19",
+      "17:22",
+      "17:25",
+      "17:28",
+      "17:32",
+      "17:35"
     ],
-    "next_departure": "14:55",
-    "minutes_until": 4,
+    "next_departure": "16:01",
+    "minutes_until": 1,
     "line_color": "#D95700"
   },
   "assets": [
     {
       "symbol": "XEQT",
-      "price": 44.99,
-      "change_percent": -0.04,
+      "price": 45.0,
+      "change_percent": -0.02,
       "color": "blue"
     },
     {
       "symbol": "BTC",
-      "price": 64533.17,
-      "change_percent": 3.65,
+      "price": 64548.0,
+      "change_percent": 3.68,
       "color": "orange"
     },
     {
       "symbol": "GOLD",
-      "price": 4053.3,
-      "change_percent": 1.19,
+      "price": 4058.7,
+      "change_percent": 1.32,
       "color": "yellow"
     },
     {
       "symbol": "SPX",
-      "price": 7546.8,
-      "change_percent": 0.42,
+      "price": 7543.88,
+      "change_percent": 0.38,
       "color": "purple"
     }
   ],
-  "market_open": true,
+  "market_open": false,
   "stock": {
     "symbol": "XEQT",
-    "price": 44.99,
-    "change_percent": -0.04,
-    "market_open": true
+    "price": 45.0,
+    "change_percent": -0.02,
+    "market_open": false
   },
   "time": {
-    "display": "14:51",
+    "display": "16:00",
     "timezone": "America/Montreal",
     "date": "JUL 14"
   }
