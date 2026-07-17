@@ -1,78 +1,78 @@
 {
-  "updated": "2026-07-17T15:45:06.215841-04:00Z",
+  "updated": "2026-07-17T16:33:35.575571-04:00Z",
   "metro": {
     "station": "Rosemont",
     "next_departures": [
-      "15:46",
-      "15:48",
-      "15:50",
-      "15:52",
-      "15:55",
-      "15:57",
-      "15:58",
-      "15:59",
-      "16:01",
-      "16:04",
-      "16:05",
-      "16:08",
-      "16:11",
-      "16:12",
-      "16:14",
-      "16:18",
-      "16:21",
-      "16:24",
-      "16:25",
-      "16:27",
-      "16:31",
-      "16:32",
-      "16:33",
       "16:34",
       "16:37",
       "16:38",
       "16:40",
       "16:44",
       "16:45",
-      "16:47"
+      "16:47",
+      "16:50",
+      "16:51",
+      "16:53",
+      "16:55",
+      "16:56",
+      "16:58",
+      "16:59",
+      "17:02",
+      "17:03",
+      "17:05",
+      "17:06",
+      "17:09",
+      "17:11",
+      "17:12",
+      "17:15",
+      "17:17",
+      "17:18",
+      "17:19",
+      "17:22",
+      "17:24",
+      "17:25",
+      "17:28",
+      "17:31"
     ],
-    "next_departure": "15:46",
+    "next_departure": "16:34",
     "minutes_until": 1,
     "line_color": "#D95700"
   },
   "assets": [
     {
       "symbol": "XEQT",
-      "price": 44.45,
-      "change_percent": -0.91,
+      "price": 44.48,
+      "change_percent": -0.85,
       "color": "blue"
     },
     {
       "symbol": "BTC",
-      "price": 64144.25,
-      "change_percent": 0.56,
+      "price": 63984.15,
+      "change_percent": 0.31,
       "color": "orange"
     },
     {
       "symbol": "GOLD",
-      "price": 4010.7,
-      "change_percent": 0.47,
+      "price": 4014.6,
+      "change_percent": 0.56,
       "color": "yellow"
     },
     {
       "symbol": "SPX",
-      "price": 7460.26,
-      "change_percent": -0.98,
+      "price": 7457.69,
+      "change_percent": -1.01,
       "color": "purple"
     }
   ],
-  "market_open": true,
+  "market_open": false,
   "stock": {
     "symbol": "XEQT",
-    "price": 44.45,
-    "change_percent": -0.91,
-    "market_open": true
+    "price": 44.48,
+    "change_percent": -0.85,
+    "market_open": false
   },
   "time": {
-    "display": "15:45",
+    "display": "16:33",
     "timezone": "America/Montreal",
     "date": "JUL 17"
   }
