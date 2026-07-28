@@ -1,27 +1,8 @@
 {
-  "updated": "2026-07-28T15:51:47.988889-04:00Z",
+  "updated": "2026-07-28T16:52:19.145151-04:00Z",
   "metro": {
     "station": "Rosemont",
     "next_departures": [
-      "15:52",
-      "15:55",
-      "15:58",
-      "16:01",
-      "16:05",
-      "16:08",
-      "16:11",
-      "16:14",
-      "16:18",
-      "16:21",
-      "16:24",
-      "16:27",
-      "16:31",
-      "16:34",
-      "16:37",
-      "16:40",
-      "16:44",
-      "16:47",
-      "16:50",
       "16:53",
       "16:56",
       "16:59",
@@ -32,47 +13,66 @@
       "17:15",
       "17:19",
       "17:22",
-      "17:25"
+      "17:25",
+      "17:28",
+      "17:32",
+      "17:35",
+      "17:38",
+      "17:41",
+      "17:45",
+      "17:49",
+      "17:52",
+      "17:56",
+      "18:00",
+      "18:04",
+      "18:08",
+      "18:12",
+      "18:17",
+      "18:21",
+      "18:26",
+      "18:30",
+      "18:35",
+      "18:40"
     ],
-    "next_departure": "15:52",
+    "next_departure": "16:53",
     "minutes_until": 1,
     "line_color": "#D95700"
   },
   "assets": [
     {
       "symbol": "XEQT",
-      "price": 44.81,
-      "change_percent": 0.04,
+      "price": 44.82,
+      "change_percent": 0.07,
       "color": "blue"
     },
     {
       "symbol": "BTC",
-      "price": 63687.23,
-      "change_percent": -0.03,
+      "price": 63846.71,
+      "change_percent": 0.22,
       "color": "orange"
     },
     {
       "symbol": "GOLD",
-      "price": 4024.6,
-      "change_percent": -1.29,
+      "price": 4028.4,
+      "change_percent": -1.19,
       "color": "yellow"
     },
     {
       "symbol": "SPX",
-      "price": 7432.63,
-      "change_percent": 0.26,
+      "price": 7428.78,
+      "change_percent": 0.21,
       "color": "purple"
     }
   ],
-  "market_open": true,
+  "market_open": false,
   "stock": {
     "symbol": "XEQT",
-    "price": 44.81,
-    "change_percent": 0.04,
-    "market_open": true
+    "price": 44.82,
+    "change_percent": 0.07,
+    "market_open": false
   },
   "time": {
-    "display": "15:51",
+    "display": "16:52",
     "timezone": "America/Montreal",
     "date": "JUL 28"
   }
