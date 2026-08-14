@@ -1,26 +1,8 @@
 {
-  "updated": "2026-08-14T11:14:02.777173-04:00Z",
+  "updated": "2026-08-14T12:05:02.531734-04:00Z",
   "metro": {
     "station": "Rosemont",
     "next_departures": [
-      "11:19",
-      "11:22",
-      "11:25",
-      "11:27",
-      "11:30",
-      "11:31",
-      "11:35",
-      "11:37",
-      "11:39",
-      "11:42",
-      "11:43",
-      "11:48",
-      "11:49",
-      "11:55",
-      "11:56",
-      "12:01",
-      "12:02",
-      "12:05",
       "12:07",
       "12:08",
       "12:13",
@@ -32,47 +14,65 @@
       "12:29",
       "12:31",
       "12:35",
-      "12:37"
+      "12:37",
+      "12:41",
+      "12:43",
+      "12:45",
+      "12:48",
+      "12:49",
+      "12:52",
+      "12:54",
+      "12:55",
+      "12:59",
+      "13:01",
+      "13:06",
+      "13:07",
+      "13:08",
+      "13:13",
+      "13:14",
+      "13:19",
+      "13:20",
+      "13:21"
     ],
-    "next_departure": "11:19",
-    "minutes_until": 5,
+    "next_departure": "12:07",
+    "minutes_until": 2,
     "line_color": "#D95700"
   },
   "assets": [
     {
       "symbol": "XEQT",
-      "price": 46.21,
-      "change_percent": -0.35,
+      "price": 46.18,
+      "change_percent": -0.41,
       "color": "blue"
     },
     {
       "symbol": "BTC",
-      "price": 62630.45,
-      "change_percent": -1.24,
+      "price": 62925.6,
+      "change_percent": -0.78,
       "color": "orange"
     },
     {
       "symbol": "GOLD",
-      "price": 4446.7,
-      "change_percent": 0.59,
+      "price": 4448.2,
+      "change_percent": 0.63,
       "color": "yellow"
     },
     {
       "symbol": "SPX",
-      "price": 7787.87,
-      "change_percent": -0.14,
+      "price": 7785.68,
+      "change_percent": -0.17,
       "color": "purple"
     }
   ],
   "market_open": true,
   "stock": {
     "symbol": "XEQT",
-    "price": 46.21,
-    "change_percent": -0.35,
+    "price": 46.18,
+    "change_percent": -0.41,
     "market_open": true
   },
   "time": {
-    "display": "11:14",
+    "display": "12:05",
     "timezone": "America/Montreal",
     "date": "AUG 14"
   }
