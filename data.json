@@ -1,30 +1,8 @@
 {
-  "updated": "2026-08-14T14:44:00.908788-04:00Z",
+  "updated": "2026-08-14T15:36:47.963214-04:00Z",
   "metro": {
     "station": "Rosemont",
     "next_departures": [
-      "14:46",
-      "14:49",
-      "14:53",
-      "14:55",
-      "14:56",
-      "15:00",
-      "15:01",
-      "15:02",
-      "15:06",
-      "15:07",
-      "15:09",
-      "15:12",
-      "15:13",
-      "15:16",
-      "15:17",
-      "15:19",
-      "15:22",
-      "15:23",
-      "15:26",
-      "15:27",
-      "15:30",
-      "15:32",
       "15:37",
       "15:39",
       "15:41",
@@ -32,34 +10,56 @@
       "15:45",
       "15:46",
       "15:48",
-      "15:50"
+      "15:50",
+      "15:52",
+      "15:55",
+      "15:57",
+      "15:58",
+      "15:59",
+      "16:01",
+      "16:04",
+      "16:05",
+      "16:08",
+      "16:11",
+      "16:12",
+      "16:14",
+      "16:18",
+      "16:21",
+      "16:24",
+      "16:25",
+      "16:27",
+      "16:31",
+      "16:32",
+      "16:33",
+      "16:34",
+      "16:37"
     ],
-    "next_departure": "14:46",
-    "minutes_until": 2,
+    "next_departure": "15:37",
+    "minutes_until": 1,
     "line_color": "#D95700"
   },
   "assets": [
     {
       "symbol": "XEQT",
-      "price": 46.17,
-      "change_percent": -0.42,
+      "price": 46.18,
+      "change_percent": -0.41,
       "color": "blue"
     },
     {
       "symbol": "BTC",
-      "price": 62899.18,
-      "change_percent": -0.82,
+      "price": 62865.94,
+      "change_percent": -0.87,
       "color": "orange"
     },
     {
       "symbol": "GOLD",
-      "price": 4434.9,
-      "change_percent": 0.33,
+      "price": 4434.0,
+      "change_percent": 0.31,
       "color": "yellow"
     },
     {
       "symbol": "SPX",
-      "price": 7783.43,
+      "price": 7783.1,
       "change_percent": -0.2,
       "color": "purple"
     }
@@ -67,12 +67,12 @@
   "market_open": true,
   "stock": {
     "symbol": "XEQT",
-    "price": 46.17,
-    "change_percent": -0.42,
+    "price": 46.18,
+    "change_percent": -0.41,
     "market_open": true
   },
   "time": {
-    "display": "14:44",
+    "display": "15:36",
     "timezone": "America/Montreal",
     "date": "AUG 14"
   }
